@@ -48,7 +48,13 @@ import static com.example.wangyu.retrofittest.MainActivity.token;
 import static com.example.wangyu.retrofittest.saveCookie.cookieStr;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
-    public static String cookieStr22="";
+    public EditText inputemail;
+    public EditText inputpassword;
+    public static String useremail;
+    public static String userpassword;
+    public static CheckBox remember;
+    public static String CheckBoxState;
+
     @SuppressLint("TrulyRandom")
     private static SSLSocketFactory createSSLSocketFactory() {
         SSLSocketFactory sSLSocketFactory = null;
@@ -85,17 +91,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return true;
         }
     }
-    public EditText inputemail;
-    public EditText inputpassword;
-    public static String useremail;
-    public static String userpassword;
-    public static CheckBox remember;
-    public static String CheckBoxState;
+
     public CheckLogin loginStateUpdate=new CheckLogin(LoginActivity.this);
 
 
     public static OkHttpClient client1=new OkHttpClient.Builder()
             .hostnameVerifier(new TrustAllHostnameVerifier())
+            .addInterceptor(new saveCookie())
             .addInterceptor(new setCookie())
             .sslSocketFactory(createSSLSocketFactory())
             .followRedirects(false)
@@ -109,23 +111,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             .build();
 
     public static SendRequest res1=retrofitLogin1.create(SendRequest.class);
-
-
-    public static OkHttpClient client2=new OkHttpClient.Builder()
-            .hostnameVerifier(new TrustAllHostnameVerifier())
-            .addInterceptor(new setCookie2())
-            .sslSocketFactory(createSSLSocketFactory())
-            .followRedirects(false)
-            .build();
-
-
-    public static Retrofit retrofitLogin2=new Retrofit.Builder()
-            .baseUrl("https://versions.xmxdev.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client2)
-            .build();
-
-    public static SendRequest res2=retrofitLogin2.create(SendRequest.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,16 +144,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response1) {
                         try{
-                            List<String> cookies=response1.headers().values("set-cookie");
-                            if (cookies != null && cookies.size() > 0) {
-                                for (int i = 0; i < cookies.size(); i++) {
-                                    String cookie=cookies.get(i).substring(0,cookies.get(i).indexOf(";"))+";"+" ";
-                                    cookieStr22+=cookie;
-
-                                }
-                                cookieStr22=cookieStr22.substring(0,cookieStr22.lastIndexOf(";"));
-                                Log.d("cookie", "点击登陆之后: "+cookieStr22);
-                                final Call<ResponseBody> logincall2=res2.getApps_islogin();
+                            Log.d("cookies", "cookie3"+cookieStr);
+                                final Call<ResponseBody> logincall2=res1.getApps_islogin();
                                 logincall2.enqueue(new Callback<ResponseBody>() {
                                     @Override
                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -179,7 +156,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                         }
 
-
                                     }
 
                                     @Override
@@ -188,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     }
                                 });
 
-                            }
+
                             realtoken=token;
                             loginStateUpdate.setLoginState(realtoken,cookieStr);
                         }

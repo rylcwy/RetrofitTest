@@ -42,9 +42,10 @@ import static com.example.wangyu.retrofittest.saveCookie.cookieStr;
 
 public class MainActivity extends AppCompatActivity {
 
-
     public static String realtoken;
     public static String token;
+    public static String cookieStr="";
+    public static CheckLogin checkLogin;
 
     @SuppressLint("TrulyRandom")
     private static SSLSocketFactory createSSLSocketFactory() {
@@ -85,10 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static OkHttpClient client=new OkHttpClient.Builder()
             .hostnameVerifier(new TrustAllHostnameVerifier())
-            .addInterceptor(new saveCookie())
             .sslSocketFactory(createSSLSocketFactory())
+            .addInterceptor(new saveCookie())
             .build();
-
 
 
     public static Retrofit retrofitLogin=new Retrofit.Builder()
@@ -100,14 +100,11 @@ public class MainActivity extends AppCompatActivity {
     public static SendRequest res=retrofitLogin.create(SendRequest.class);
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        CheckLogin checkLogin=new CheckLogin(MainActivity.this);
+        checkLogin=new CheckLogin(MainActivity.this);
         if (checkLogin.getLoginState()) {
             Toast.makeText(MainActivity.this, "进入列表页", Toast.LENGTH_LONG).show();
 
@@ -150,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
                             while(m.find()){
                                 token=m.group(1);
                                 Log.d("MainActivity", "token: "+token);
-                                Log.d("cookie", "cookie: "+cookieStr);
                                 callbacks.onSuccess(token);
                             }
                         } catch (Exception e) {

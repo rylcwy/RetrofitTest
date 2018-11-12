@@ -13,13 +13,12 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class saveCookie implements Interceptor {
-
-    public static String cookieStr = "";
+    public static String cookieStr="";
     @Override
     public  Response intercept(Chain chain) throws IOException {
         Response resp = chain.proceed(chain.request());
         List<String> cookies = resp.headers("set-cookie");
-
+        cookieStr="";
         if (cookies != null && cookies.size() > 0) {
             for (int i = 0; i < cookies.size(); i++) {
                 String cookie=cookies.get(i).substring(0,cookies.get(i).indexOf(";"))+";"+" ";
@@ -27,6 +26,7 @@ public class saveCookie implements Interceptor {
 
             }
             cookieStr=cookieStr.substring(0,cookieStr.lastIndexOf(";"));
+            Log.d("cookies", "cookie2"+cookieStr);
         }
         return resp;
 
