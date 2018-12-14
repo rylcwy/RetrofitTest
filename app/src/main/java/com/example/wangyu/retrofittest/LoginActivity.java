@@ -1,5 +1,4 @@
 package com.example.wangyu.retrofittest;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -95,19 +94,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public CheckLogin loginStateUpdate=new CheckLogin(LoginActivity.this);
 
 
-    public static OkHttpClient client1=new OkHttpClient.Builder()
-            .hostnameVerifier(new TrustAllHostnameVerifier())
-            .addInterceptor(new saveCookie())
-            .addInterceptor(new setCookie())
-            .sslSocketFactory(createSSLSocketFactory())
-            .followRedirects(false)
-            .build();
 
 
     public static Retrofit retrofitLogin1=new Retrofit.Builder()
             .baseUrl("https://versions.xmxdev.com")
             .addConverterFactory(GsonConverterFactory.create())
-            .client(client1)
+            .client(MainActivity.client)
             .build();
 
     public static SendRequest res1=retrofitLogin1.create(SendRequest.class);

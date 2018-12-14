@@ -1,12 +1,14 @@
 package com.example.wangyu.retrofittest;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.CookieManager;
 import android.widget.Toast;
 
 
@@ -26,6 +28,9 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -46,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     public static String token;
     public static String cookieStr="";
     public static CheckLogin checkLogin;
+    public CookieManager cookieManager;
+    public static OkHttpClient client;
+    public static Retrofit retrofitLogin;
+    public static SendRequest res;
 
     @SuppressLint("TrulyRandom")
     private static SSLSocketFactory createSSLSocketFactory() {
@@ -84,26 +93,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static OkHttpClient client=new OkHttpClient.Builder()
-            .hostnameVerifier(new TrustAllHostnameVerifier())
-            .sslSocketFactory(createSSLSocketFactory())
-            .addInterceptor(new saveCookie())
-            .build();
-
-
-    public static Retrofit retrofitLogin=new Retrofit.Builder()
-            .baseUrl("https://versions.xmxdev.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build();
-
-    public static SendRequest res=retrofitLogin.create(SendRequest.class);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        client=new OkHttpClient.Builder()
+                .hostnameVerifier(new TrustAllHostnameVerifier())
+                .sslSocketFactory(createSSLSocketFactory())
+                .cookieJar(new com.example.wangyu.retrofittest.CookieManager(MainActivity.this))
+                .build();
+
+        retrofitLogin=new Retrofit.Builder()
+                .baseUrl("https://versions.xmxdev.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        res=retrofitLogin.create(SendRequest.class);
+
         checkLogin=new CheckLogin(MainActivity.this);
         if (checkLogin.getLoginState()) {
             Toast.makeText(MainActivity.this, "进入列表页", Toast.LENGTH_LONG).show();

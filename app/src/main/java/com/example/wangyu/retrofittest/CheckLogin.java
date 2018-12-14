@@ -11,17 +11,15 @@ public class CheckLogin{
     }
 
     public void setLoginState(String realtoken,String cookieStr){
-        SharedPreferences sharedPreferences=context.getSharedPreferences("userconfig",0);
+        SharedPreferences sharedPreferences=context.getSharedPreferences("COOKIE_PREFS",0);
         SharedPreferences.Editor editor =sharedPreferences.edit();
         editor.putBoolean("isLogin",true);
-        editor.putString("realtoken",realtoken);
-        editor.putString("cookies",cookieStr);
         editor.apply();
 
     }
 
     public boolean getLoginState(){
-        SharedPreferences sharedPreferences=context.getSharedPreferences("userconfig",0);
+        SharedPreferences sharedPreferences=context.getSharedPreferences("COOKIE_PREFS",0);
         return sharedPreferences.getBoolean("isLogin",false);
     }
 
