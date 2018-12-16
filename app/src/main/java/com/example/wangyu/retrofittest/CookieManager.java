@@ -1,10 +1,7 @@
-package com.example.wangyu.retrofittest;
+package  com.example.wangyu.retrofittest;
 
 import android.content.Context;
-import android.util.Log;
 
-import java.net.CookieStore;
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Cookie;
@@ -19,19 +16,11 @@ public class CookieManager implements CookieJar{
     }
     @Override
     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-        for(int i=0;i<cookies.size();i++){
-            Log.d(logtag, "saveFromResponse: "+cookies.get(i));
-            cookieStore.add(cookies.get(i));
-
-        }
-
-
+        cookieStore.persist(cookies);
     }
 
     @Override
     public List<Cookie> loadForRequest(HttpUrl url) {
-        return cookieStore.getCookie();
-
-
+       return cookieStore.load();
     }
 }
