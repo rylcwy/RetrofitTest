@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public static Retrofit retrofitLogin;
     public static SendRequest res;
 
+
     @SuppressLint("TrulyRandom")
     private static SSLSocketFactory createSSLSocketFactory() {
         SSLSocketFactory sSLSocketFactory = null;
@@ -114,7 +115,9 @@ public class MainActivity extends AppCompatActivity {
 
         checkLogin=new CheckLogin(MainActivity.this);
         if (checkLogin.getLoginState()) {
-            Toast.makeText(MainActivity.this, "进入列表页", Toast.LENGTH_LONG).show();
+            Intent intent=new Intent();
+            intent.setAction("android.intent.action.projectlist");
+            startActivity(intent);
 
         }
         else {
@@ -124,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
             getToken(new TokenCallbacks() {
                 @Override
                 public void onSuccess(@NonNull String token) {
-
 
                 }
 

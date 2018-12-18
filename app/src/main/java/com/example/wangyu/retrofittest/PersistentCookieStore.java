@@ -14,18 +14,14 @@ public class PersistentCookieStore {
     private static final String DOMAIN = "versions.xmxdev.com";
 
     private final String COOKIE_PREFS = "Cookies_Prefs";
+    public static SharedPreferences.Editor prefsWriter;
     private SharedPreferences cookiePrefs;
-    public Map<String, String> cookies;
+
 
     public PersistentCookieStore(Context context) {
-        cookies = new HashMap<>();
+
         cookiePrefs = context.getSharedPreferences(COOKIE_PREFS, 0);
         Map<String, ?> prefsMap = cookiePrefs.getAll();
-        for (Map.Entry<String, ?> entry : prefsMap.entrySet()) {
-            String content = "";
-            content += (entry.getKey() + ":" + entry.getValue());
-            System.out.print("content" + content);
-        }
     }
 
     protected String getCookieToken(Cookie cookie) {
@@ -41,7 +37,7 @@ public class PersistentCookieStore {
     public void persist(List<Cookie> cookies){
         for (Cookie cookie: cookies) {
             if (cookie.persistent() && cookie.domain() != null && cookie.domain().endsWith(DOMAIN)) {
-                SharedPreferences.Editor prefsWriter = cookiePrefs.edit();
+                prefsWriter = cookiePrefs.edit();
                 prefsWriter.putString(cookie.name(), cookie.value());
                 prefsWriter.apply();
             }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:action="http://schemas.android.com/apk/res-auto"
     package="com.example.wangyu.retrofittest">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,8 +26,21 @@
         </activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
-                <action android:name="android.intent.action.login"/>
+                <action android:name="android.intent.action.login" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ProjectListActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.projectlist" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".BetaList">
+            <intent-filter>
+                <action android:name="android.intent.action.BetaList"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

@@ -1,6 +1,7 @@
 package com.example.wangyu.retrofittest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -129,14 +130,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     CheckBoxState="off";
                 }
 
-
                 final Call<ResponseBody> logincall=res1.getApps(useremail,userpassword,token);
 
                 logincall.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response1) {
                         try{
-                            Log.d("cookies", "cookie3"+cookieStr);
                                 final Call<ResponseBody> logincall2=res1.getApps_islogin();
                                 logincall2.enqueue(new Callback<ResponseBody>() {
                                     @Override
@@ -147,6 +146,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         catch (IOException e){
 
                                         }
+                                        Intent intent=new Intent();
+                                        intent.setAction("android.intent.action.projectlist");
+                                        startActivity(intent);
 
                                     }
 
@@ -158,7 +160,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
                             realtoken=token;
-                            loginStateUpdate.setLoginState(realtoken,cookieStr);
+                            loginStateUpdate.setLoginState();
                         }
                         catch (Exception e){
                             Log.d("LoginActivity", "Exception: "+e);
@@ -166,7 +168,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
 
                     }
-
                     @Override
                     public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                         Log.d("Login", "onFailure: "+t);

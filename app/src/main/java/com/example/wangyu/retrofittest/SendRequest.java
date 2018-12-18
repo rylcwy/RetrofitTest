@@ -28,6 +28,9 @@ public interface SendRequest {
     @GET("/")
     Call<ResponseBody> getApps_islogin();
 
+    @GET("/application/582aaa0455554/releases?page=1")
+    Call<ResponseBody> getTapTapBeta();
+
 
 
 
