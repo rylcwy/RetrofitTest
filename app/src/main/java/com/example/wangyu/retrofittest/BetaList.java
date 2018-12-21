@@ -2,7 +2,6 @@ package com.example.wangyu.retrofittest;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class BetaList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beta_list);
         initVersions();
-        VersionAdapter adapter=new VersionAdapter(BetaList.this,R.layout.version_item,versionsList);
+        VersionAdapter adapter=new VersionAdapter(BetaList.this,R.layout.versions_item,versionsList);
         ListView listView=(ListView)findViewById(R.id.beta_list);
         listView.setAdapter(adapter);
 
