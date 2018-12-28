@@ -22,10 +22,12 @@ public class BetaList extends AppCompatActivity {
     }
 
     private void initVersions(){
-            Versions version1=new Versions("2.0.7.4","504","日志日志日志日志日志日志日志","2018-12-03 18:30:32");
+            Versions version1=new Versions("2.0.7.4","504","日志日志日志日志日志日志日志","2018-12-03 18:30:32",
+                    "wangyu","否");
             versionsList.add(version1);
             Versions version2=new Versions("2.0.7.3","503","[新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB  "
-                    +"- 新增论坛内搜索 "+"- 推荐视频模块增加“换一组”" +"[优化体验] - 视频加载速度优化"+" - 夜间模式体验优化","2018-12-06 18:30:32");
+                    +"- 新增论坛内搜索 "+"- 推荐视频模块增加“换一组”" +"[优化体验] - 视频加载速度优化"+" - 夜间模式体验优化","2018-12-06 18:30:32","wangui",
+                    "否");
             versionsList.add(version2);
 
     }

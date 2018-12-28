@@ -28,13 +28,18 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
         View view= LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
         TextView versionName=(TextView)view.findViewById(R.id.version_name);
         TextView versionCode=(TextView)view.findViewById(R.id.version_code);
-        TextView versionDate=(TextView)view.findViewById(R.id.version_date);
+        TextView versionDate=(TextView)view.findViewById(R.id.create_date);
         TextView versionDetail=(TextView)view.findViewById(R.id.version_detail);
+        TextView versionReporter=(TextView)view.findViewById(R.id.reporter);
+        TextView versionforceUpdate=(TextView)view.findViewById(R.id.force_update);
         Button download=(Button)view.findViewById(R.id.download);
+
         versionCode.setText(versions.getVersionCode());
         versionName.setText(versions.getVersionName());
         versionDetail.setText(versions.getVersionDetail());
         versionDate.setText(versions.getVersionDate());
+        versionReporter.setText(versions.getVersionReporter());
+        versionforceUpdate.setText(versions.getForceUpdate());
         return view;
     }
 }
