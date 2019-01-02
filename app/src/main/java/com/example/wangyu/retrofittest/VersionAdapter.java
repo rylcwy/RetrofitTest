@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class VersionAdapter extends ArrayAdapter<Versions>{
@@ -53,17 +55,20 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
             TextView versionName=(TextView)convertView.findViewById(R.id.version_name);
             TextView versionCode=(TextView)convertView.findViewById(R.id.version_code);
             TextView versionDate=(TextView)convertView.findViewById(R.id.version_date);
+            TextView versionReporter=(TextView)convertView.findViewById(R.id.reporter);
+            TextView versionUpdate=(TextView)convertView.findViewById(R.id.force_update);
             Button download=(Button)convertView.findViewById(R.id.download);
             versionCode.setText(versions.getVersionCode());
             versionName.setText(versions.getVersionName());
             versionDate.setText(versions.getVersionDate());
+            versionReporter.setText(versions.getVersionReporter());
+            versionUpdate.setText(versions.getForceUpdate());
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-        viewHolder.expandableTextView.setText(sampleStrings[position], mCollapsedStatus, position);
-
+        viewHolder.expandableTextView.setText(versions.getVersionDetail(), mCollapsedStatus, position);
 
         return convertView;
 

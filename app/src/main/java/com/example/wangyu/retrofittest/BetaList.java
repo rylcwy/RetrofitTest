@@ -34,20 +34,15 @@ public class BetaList extends AppCompatActivity {
     }
 
     private void initVersions(){
-            Versions version3=new Versions("2.0.7.3","503","Android provides a rich application framework that allows you to build innovative apps and games for mobile devices in a Java language environment. The documents listed in the left navigation provide details about how to build apps using Android's various APIs.","2018-12-06 18:30:32");
+            Versions version3=new Versions("2.0.7.3","503","Android provides a rich application framework that allows you to build innovative apps and games for mobile devices in a Java language environment. The documents listed in the left navigation provide details about how to build apps using Android's various APIs.","2018-12-06 18:30:32","wanngyu","否");
             versionsList.add(version3);
             Versions version4=new Versions("2.0.7.3","503","[新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB  "
-                +"- 新增论坛内搜索 "+"- 推荐视频模块增加“换一组”" +"[优化体验] - 视频加载速度优化"+" - 夜间模式体验优化","2018-12-06 18:30:32");
+                +"- 新增论坛内搜索 "+"- 推荐视频模块增加“换一组”" +"[优化体验] - 视频加载速度优化"+" - 夜间模式体验优化","2018-12-06 18:30:32","wangyu","否");
             versionsList.add(version4);
             Versions version5=new Versions("2.0.7.3","503","[新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB  "
-                +"- 新增论坛内搜索 "+"- 推荐视频模块增加“换一组”" +"[优化体验] - 视频加载速度优化"+" - 夜间模式体验优化","2018-12-06 18:30:32");
+                +"- 新增论坛内搜索 "+"- 推荐视频模块增加“换一组”" +"[优化体验] - 视频加载速度优化"+" - 夜间模式体验优化","2018-12-06 18:30:32","wangyu","否");
             versionsList.add(version5);
-            Versions version6=new Versions("2.0.7.3","503","[新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB  "
-                +"- 新增论坛内搜索 "+"- 推荐视频模块增加“换一组”" +"[优化体验] - 视频加载速度优化"+" - 夜间模式体验优化","2018-12-06 18:30:32");
-            versionsList.add(version6);
-            Versions version7=new Versions("2.0.7.3","503","[新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB  "
-                +"- 新增论坛内搜索 "+"- 推荐视频模块增加“换一组”" +"[优化体验] - 视频加载速度优化"+" - 夜间模式体验优化","2018-12-06 18:30:32");
-            versionsList.add(version7);
+
 
     }
 
