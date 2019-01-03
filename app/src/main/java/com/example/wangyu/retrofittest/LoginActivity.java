@@ -94,9 +94,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public CheckLogin loginStateUpdate=new CheckLogin(LoginActivity.this);
 
-
-
-
     public static Retrofit retrofitLogin1=new Retrofit.Builder()
             .baseUrl("https://versions.xmxdev.com")
             .addConverterFactory(GsonConverterFactory.create())

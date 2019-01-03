@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
@@ -19,24 +20,34 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import static com.example.wangyu.retrofittest.BetaList.versionsList;
+
 public class VersionAdapter extends ArrayAdapter<Versions>{
     private int resourceId;
     private final Context mContext;
     private final SparseBooleanArray mCollapsedStatus;
-    private final String[] sampleStrings;
+
 
     public VersionAdapter(Context context, int textViewResourceId,List<Versions> objects){
         super(context,textViewResourceId,objects);
         resourceId=textViewResourceId;
         mContext=context;
         mCollapsedStatus = new SparseBooleanArray();
-        sampleStrings = mContext.getResources().getStringArray(R.array.sampleStrings);
-
 
 
 
 
     }
+
+
+    @Override
+    public int getCount() {
+        return versionsList.size();
+    }
+
+
+
+
 
     @Override
     public long getItemId(int position) {
@@ -63,7 +74,6 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
             versionDate.setText(versions.getVersionDate());
             versionReporter.setText(versions.getVersionReporter());
             versionUpdate.setText(versions.getForceUpdate());
-
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
