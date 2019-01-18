@@ -19,6 +19,7 @@ public class BetaList extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("Beta", "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beta_list);
         initVersions();

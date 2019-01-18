@@ -1,18 +1,25 @@
 package com.example.wangyu.retrofittest;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
+
+import io.reactivex.annotations.NonNull;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProjectListActivity extends AppCompatActivity implements View.OnClickListener{
+    public String html;
 
 
     @Override
@@ -33,8 +40,21 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                 Call<ResponseBody> getList=MainActivity.res.getTapTapBeta();
                 getList.enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        Log.d("list", "onResponse: "+response.toString());
+                    public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response){
+                        try{
+                            String html=response.body().string();
+                            Document doc=Jsoup.parse(html);
+                            String title=doc.title();
+                            Log.d("xmlparse", "title"+title);
+
+                        }
+
+                        catch (IOException e){
+
+                        }
+
+
+
                         Intent intent=new Intent();
                         intent.setAction("android.intent.action.BetaList");
                         startActivity(intent);
