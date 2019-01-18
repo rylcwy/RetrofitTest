@@ -3,20 +3,15 @@ package com.example.wangyu.retrofittest;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.method.ScrollingMovementMethod;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -35,8 +30,6 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
         mCollapsedStatus = new SparseBooleanArray();
 
 
-
-
     }
 
 
@@ -44,9 +37,6 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
     public int getCount() {
         return versionsList.size();
     }
-
-
-
 
 
     @Override
@@ -60,25 +50,27 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
         Versions versions=getItem(position);
         final ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.versions_item, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(resourceId, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.expandableTextView = (ExpandableTextView) convertView.findViewById(R.id.expand_text_view);
-            TextView versionName=(TextView)convertView.findViewById(R.id.version_name);
-            TextView versionCode=(TextView)convertView.findViewById(R.id.version_code);
-            TextView versionDate=(TextView)convertView.findViewById(R.id.version_date);
-            TextView versionReporter=(TextView)convertView.findViewById(R.id.reporter);
-            TextView versionUpdate=(TextView)convertView.findViewById(R.id.force_update);
-            Button download=(Button)convertView.findViewById(R.id.download);
-            versionCode.setText(versions.getVersionCode());
-            versionName.setText(versions.getVersionName());
-            versionDate.setText(versions.getVersionDate());
-            versionReporter.setText(versions.getVersionReporter());
-            versionUpdate.setText(versions.getForceUpdate());
+            viewHolder.versionName=(TextView)convertView.findViewById(R.id.version_name);
+            viewHolder.versionCode=(TextView)convertView.findViewById(R.id.version_code);
+            viewHolder.versionDate=(TextView)convertView.findViewById(R.id.version_date);
+            viewHolder.versionReporter=(TextView)convertView.findViewById(R.id.reporter);
+            viewHolder.versionUpdate=(TextView)convertView.findViewById(R.id.force_update);
+            viewHolder.download=(Button)convertView.findViewById(R.id.download);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        viewHolder.versionCode.setText(versions.getVersionCode());
+        viewHolder.versionName.setText(versions.getVersionName());
+        viewHolder.versionDate.setText(versions.getVersionDate());
+        viewHolder.versionReporter.setText(versions.getVersionReporter());
+        viewHolder.versionUpdate.setText(versions.getForceUpdate());
         viewHolder.expandableTextView.setText(versions.getVersionDetail(), mCollapsedStatus, position);
+
 
         return convertView;
 
@@ -86,6 +78,9 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
 
     private static class ViewHolder{
         ExpandableTextView expandableTextView;
+        TextView versionName,versionCode,versionDate,versionReporter,versionUpdate;
+        Button download;
+
     }
 
 }
