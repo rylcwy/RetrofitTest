@@ -9,8 +9,10 @@ import android.widget.Button;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 import okhttp3.ResponseBody;
@@ -44,8 +46,14 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                         try{
                             String html=response.body().string();
                             Document doc=Jsoup.parse(html);
-                            String title=doc.title();
-                            Log.d("xmlparse", "title"+title);
+                            Elements versions=doc.select("table.table.table-hover tr:nth-child(5) td");
+                            Elements update_detail=doc.select("table.table.table-hover tr:nth-child(6)");
+                            Log.d("xmlparse", "update_detail: "+update_detail.text());
+                            List<String> versionsinfo=versions.eachText();
+                            for (String info:versionsinfo
+                                 ) {
+                                Log.d("xmlparse", "infos: "+info);
+                            }
 
                         }
 

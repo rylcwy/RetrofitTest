@@ -1,27 +1,21 @@
 package com.example.wangyu.retrofittest;
+
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.util.Xml;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.sql.Time;
-import java.util.List;
-import java.util.Timer;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -30,22 +24,15 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import okio.Utf8;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import javax.net.ssl.HostnameVerifier;
-import com.example.wangyu.retrofittest.MainActivity.*;
 
 import static com.example.wangyu.retrofittest.MainActivity.realtoken;
 import static com.example.wangyu.retrofittest.MainActivity.token;
-import static com.example.wangyu.retrofittest.saveCookie.cookieStr;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     public EditText inputemail;
@@ -137,12 +124,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 logincall2.enqueue(new Callback<ResponseBody>() {
                                     @Override
                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if (response.code()!=200){
+                                            Toast.makeText(LoginActivity.this,"登陆错误"+response.code(),Toast.LENGTH_SHORT).show();
+
+                                        }
                                         try{
                                             Log.d("nb", "onResponse: "+response.body().string());
                                         }
-                                        catch (IOException e){
+                                        catch (IOException e ){
+                                            Toast.makeText(LoginActivity.this,"登陆错误"+response.code(),Toast.LENGTH_SHORT).show();
 
                                         }
+
                                         Intent intent=new Intent();
                                         intent.setAction("android.intent.action.projectlist");
                                         startActivity(intent);

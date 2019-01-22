@@ -1,48 +1,34 @@
 package com.example.wangyu.retrofittest;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
-import android.widget.Toast;
 
-
-import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import static com.example.wangyu.retrofittest.saveCookie.cookieStr;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -103,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 .hostnameVerifier(new TrustAllHostnameVerifier())
                 .sslSocketFactory(createSSLSocketFactory())
                 .cookieJar(new com.example.wangyu.retrofittest.CookieManager(MainActivity.this))
+                .connectTimeout(30,TimeUnit.SECONDS)
                 .build();
 
         retrofitLogin=new Retrofit.Builder()
