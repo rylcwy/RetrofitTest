@@ -1,5 +1,7 @@
 package com.example.wangyu.retrofittest;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -17,6 +19,17 @@ public class BetaList extends AppCompatActivity {
 
     private TabLayout mTabLayout;
 
+    public static void actionStart(Context context,List<String> data1,List<String> data2,List<String> data3,List<String> data4,List<String> data5,List<String> data6){
+        Intent intent=new Intent(context,BetaList.class);
+        intent.putExtra("version_info","version_code");
+        intent.putExtra("update_detail","update_detail");
+        intent.putExtra("version_info","version_name");
+        intent.putExtra("version_info","version_publisher");
+        intent.putExtra("version_info","version_date");
+        intent.putExtra("version_info","version_force");
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("Beta", "onCreate: ");
@@ -30,15 +43,12 @@ public class BetaList extends AppCompatActivity {
     }
 
     private void initVersions(){
-            Versions version3=new Versions("2.0.7.3","503","[新增功能] - 详情页社区下新增视频TAB - 新增论坛内搜索 - 推荐视频模块增加“换一组” [优化体验] - 视频加载速度优化 - 夜间模式体验优化- 优化成就徽章功能 - 优化视频首帧加载速度- 优化成就徽章功能 - 优化视频首帧加载速度111111111112222222222222233333333333333333344444444444444444444455555555555566666666666666666666666666669","2018-12-06 18:30:32","王彧","否");
-            versionsList.add(version3);
-            Versions version4=new Versions("2.0.7.3","503","安装apk时，会首先弹出授权页，这个时候需要用户点击安装按钮才能够开始安装。在需要同时安装多个apk的时候，授权过程会显得略为繁琐。因此，可以通过一个在授权页自动点击安装的小工具来完成安装。首先通过以下代码来向系统提交安装apk的请求","2018-12-06 18:30:32","wangyu","否");
-            versionsList.add(version4);
-            Versions version5=new Versions("2.0.7.3","503","[新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB [新增功能] - 详情页社区下新增视频TAB  "
-                +"- 新增论坛内搜索 "+"- 推荐视频模块增加“换一组”" +"[优化体验] - 视频加载速度优化"+" - 夜间模式体验优化","2018-12-06 18:30:32","王彧","否");
-            versionsList.add(version5);
-            Versions version6=new Versions("2.0.7.3","503","[新增功能] - 详情页社区下新增视频TAB - 新增论坛内搜索 - 推荐视频模块增加“换一组” [优化体验] - 视频加载速度优化 - 夜间模式体验优化- 优化成就徽章功能 - 优化视频首帧加载速度- 优化成就徽章功能 - 优化视频首帧加载速度111111111112222222222222233333333333333333344444444444444444444455555555555566666666666666666666666666669","2018-12-06 18:30:32","王彧","否");
-            versionsList.add(version6);
+        for (int i =0;i<10;i++){
+            Versions version1=new Versions(ProjectListActivity.versions_name_list.get(i),ProjectListActivity.versions_code_list.get(i),ProjectListActivity.update_detail_list.get(i),ProjectListActivity.versions_date_list.get(i),
+                    ProjectListActivity.versions_publisher_list.get(i),ProjectListActivity.versions_force_list.get(i));
+            versionsList.add(version1);
+        }
+
 
 
     }
