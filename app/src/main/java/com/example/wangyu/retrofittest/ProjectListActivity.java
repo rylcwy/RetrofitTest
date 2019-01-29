@@ -54,30 +54,29 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                 if (CheckLogin.getLoginState()) {
                     Call<ResponseBody> getList = MainActivity.res.getTapTapBeta();
                     getList.enqueue(new Callback<ResponseBody>() {
-
-
                         @Override
                         public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                             try {
-                                if (response.body().string().contains("登录你的账户")) {
+                                String html = response.body().string();
+
+                                if (html.contains("登录你的账户")) {
                                     Intent intent = new Intent();
                                     intent.setAction("android.intent.action.login");
                                     startActivity(intent);
-//                                    MainActivity.getToken(new TokenCallbacks() {
-//                                        @Override
-//                                        public void onSuccess(@android.support.annotation.NonNull String token) {
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onFailure(@android.support.annotation.NonNull Throwable throwable) {
-//
-//                                        }
-//                                    });
+                                    MainActivity.getToken(new TokenCallbacks() {
+                                        @Override
+                                        public void onSuccess(@android.support.annotation.NonNull String token) {
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(@android.support.annotation.NonNull Throwable throwable) {
+
+                                        }
+                                    });
                                 }
 
                                 else {
-                                    String html = response.body().string();
                                     Document doc = Jsoup.parse(html);
                                     Elements update_detail_e = doc.select("table.table.table-hover tr:nth-child(even)");
                                     Elements versions_info_e = doc.select("table.table.table-hover tr:nth-child(odd) td");
