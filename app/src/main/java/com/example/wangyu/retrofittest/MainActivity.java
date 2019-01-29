@@ -100,8 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
         res=retrofitLogin.create(SendRequest.class);
 
-        checkLogin=new CheckLogin(MainActivity.this);
-        if (checkLogin.getLoginState()) {
+        if (CheckLogin.getLoginState()) {
             Intent intent=new Intent();
             intent.setAction("android.intent.action.projectlist");
             startActivity(intent);
@@ -127,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getToken(final TokenCallbacks callbacks) {
+    public static void getToken(final TokenCallbacks callbacks) {
 
         Call<ResponseBody> call = res.getCookie();
             call.enqueue(new Callback<ResponseBody>() {

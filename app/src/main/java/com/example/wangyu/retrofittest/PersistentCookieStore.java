@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,13 +13,17 @@ public class PersistentCookieStore {
     private static final String DOMAIN = "versions.xmxdev.com";
 
     private final String COOKIE_PREFS = "Cookies_Prefs";
+    private final String LOGIN_STATUS = "Login_Status";
     public static SharedPreferences.Editor prefsWriter;
-    private SharedPreferences cookiePrefs;
-
+    public static SharedPreferences.Editor loginstatueWriter;
+    public static SharedPreferences cookiePrefs;
+    public static SharedPreferences loginstatusPrefs;
 
     public PersistentCookieStore(Context context) {
 
         cookiePrefs = context.getSharedPreferences(COOKIE_PREFS, 0);
+        loginstatusPrefs=context.getSharedPreferences(LOGIN_STATUS,0);
+
         Map<String, ?> prefsMap = cookiePrefs.getAll();
     }
 
@@ -40,6 +43,10 @@ public class PersistentCookieStore {
                 prefsWriter = cookiePrefs.edit();
                 prefsWriter.putString(cookie.name(), cookie.value());
                 prefsWriter.apply();
+
+                loginstatueWriter=loginstatusPrefs.edit();
+                loginstatueWriter.putBoolean("isLogin",true);
+                loginstatueWriter.apply();
             }
         }
     }
@@ -62,6 +69,7 @@ public class PersistentCookieStore {
 
             result.add(builder.build());
         }
+
 
         return result;
     }

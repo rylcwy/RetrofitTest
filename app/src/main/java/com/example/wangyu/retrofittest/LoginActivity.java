@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static String userpassword;
     public static CheckBox remember;
     public static String CheckBoxState;
+    public static int responseCode;
 
     @SuppressLint("TrulyRandom")
     private static SSLSocketFactory createSSLSocketFactory() {
@@ -79,7 +80,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public CheckLogin loginStateUpdate=new CheckLogin(LoginActivity.this);
 
     public static Retrofit retrofitLogin1=new Retrofit.Builder()
             .baseUrl("https://versions.xmxdev.com")
@@ -101,6 +101,62 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+
+    public int logIn(LoginCallbacks loginCallbacks){
+
+        final Call<ResponseBody> logincall=res1.getApps(useremail,userpassword,token);
+
+        logincall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response1) {
+                try{
+                    final Call<ResponseBody> logincall2=res1.getApps_islogin();
+                    logincall2.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            responseCode=response.code();
+                            if (responseCode!=200){
+                                Toast.makeText(LoginActivity.this,"登陆错误"+response.code(),Toast.LENGTH_SHORT).show();
+
+                            }
+                            try{
+                                Log.d("nb", "onResponse: "+response.body().string());
+                            }
+                            catch (IOException e ){
+                                Toast.makeText(LoginActivity.this,"登陆错误"+response.code(),Toast.LENGTH_SHORT).show();
+
+                            }
+
+                            Intent intent=new Intent();
+                            intent.setAction("android.intent.action.projectlist");
+                            startActivity(intent);
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                        }
+                    });
+
+
+                    realtoken=token;
+                }
+                catch (Exception e){
+                    Log.d("LoginActivity", "Exception: "+e);
+
+                }
+
+            }
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.d("Login", "onFailure: "+t);
+
+            }
+        });
+        return responseCode;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -113,59 +169,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 else {
                     CheckBoxState="off";
                 }
-
-                final Call<ResponseBody> logincall=res1.getApps(useremail,userpassword,token);
-
-                logincall.enqueue(new Callback<ResponseBody>() {
+                logIn(new LoginCallbacks() {
                     @Override
-                    public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response1) {
-                        try{
-                                final Call<ResponseBody> logincall2=res1.getApps_islogin();
-                                logincall2.enqueue(new Callback<ResponseBody>() {
-                                    @Override
-                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                        if (response.code()!=200){
-                                            Toast.makeText(LoginActivity.this,"登陆错误"+response.code(),Toast.LENGTH_SHORT).show();
+                    public void getProjectList(int responseCode) {
+                        if (responseCode==200){
 
-                                        }
-                                        try{
-                                            Log.d("nb", "onResponse: "+response.body().string());
-                                        }
-                                        catch (IOException e ){
-                                            Toast.makeText(LoginActivity.this,"登陆错误"+response.code(),Toast.LENGTH_SHORT).show();
-
-                                        }
-
-                                        Intent intent=new Intent();
-                                        intent.setAction("android.intent.action.projectlist");
-                                        startActivity(intent);
-
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                                    }
-                                });
-
-
-                            realtoken=token;
-                            loginStateUpdate.setLoginState();
-                        }
-                        catch (Exception e){
-                            Log.d("LoginActivity", "Exception: "+e);
 
                         }
-
+                        else onFailure();
                     }
+
                     @Override
-                    public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                        Log.d("Login", "onFailure: "+t);
+                    public void onFailure() {
 
                     }
                 });
-
-
                 break;
             default:
                 break;
