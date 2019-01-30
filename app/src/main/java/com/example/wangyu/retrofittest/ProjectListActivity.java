@@ -52,7 +52,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.TapTap_Beta:
                 if (CheckLogin.getLoginState()) {
-                    Call<ResponseBody> getList = MainActivity.res.getTapTapBeta();
+                    Call<ResponseBody> getList = MainActivity.res.getTapTapBeta(2);
                     getList.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
