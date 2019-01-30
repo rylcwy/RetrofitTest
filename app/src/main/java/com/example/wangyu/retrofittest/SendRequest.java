@@ -5,7 +5,9 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 
 public interface SendRequest {
@@ -21,6 +23,9 @@ public interface SendRequest {
 
     @GET("/application/582aaa0455554/releases")
     Call<ResponseBody> getTapTapBeta();
+
+    @HTTP(method = "GET",path="/application/582aaa0455554/releases?page=id",hasBody = false)
+    Call<ResponseBody> getTapTapBeta1(@Path("id")int id);
 
 
 
