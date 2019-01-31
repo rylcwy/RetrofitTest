@@ -10,7 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static com.example.wangyu.retrofittest.ProjectListActivity.versions_code_list;
+import static com.example.wangyu.retrofittest.ProjectListActivity.versions_date_list;
+import static com.example.wangyu.retrofittest.ProjectListActivity.versions_force_list;
+import static com.example.wangyu.retrofittest.ProjectListActivity.versions_name_list;
+import static com.example.wangyu.retrofittest.ProjectListActivity.versions_publisher_list;
 
 public class BetaList extends AppCompatActivity implements LoadListView.IloadListener {
     static List<Versions> versionsList=new ArrayList<>();
@@ -33,7 +40,7 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("Beta", "onCreate: ");
+        Log.d("Beta1", "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beta_list);
         initVersions();
@@ -46,8 +53,8 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
 
     private void initVersions(){
         for (int i =0;i<10;i++){
-            Versions version1=new Versions(ProjectListActivity.versions_name_list.get(i),ProjectListActivity.versions_code_list.get(i),ProjectListActivity.update_detail_list.get(i),ProjectListActivity.versions_date_list.get(i),
-                    ProjectListActivity.versions_publisher_list.get(i),ProjectListActivity.versions_force_list.get(i));
+            Versions version1=new Versions(versions_name_list.get(i),versions_code_list.get(i),ProjectListActivity.update_detail_list.get(i),versions_date_list.get(i),
+                    versions_publisher_list.get(i),versions_force_list.get(i));
             versionsList.add(version1);
         }
 
@@ -63,9 +70,15 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
             @Override
             public void run() {
                 // TODO Auto-generated method stub
+                ProjectListActivity.getBetaList(2);
+                Collections.reverse(versions_name_list);
+                Collections.reverse(versions_code_list);
+                Collections.reverse(versions_date_list);
+                Collections.reverse(versions_publisher_list);
+                Collections.reverse(versions_force_list);
                 for (int i =0;i<10;i++){
-                    Versions version1=new Versions(ProjectListActivity.versions_name_list.get(i),ProjectListActivity.versions_code_list.get(i),ProjectListActivity.update_detail_list.get(i),ProjectListActivity.versions_date_list.get(i),
-                            ProjectListActivity.versions_publisher_list.get(i),ProjectListActivity.versions_force_list.get(i));
+                    Versions version1=new Versions(versions_name_list.get(i),versions_code_list.get(i),ProjectListActivity.update_detail_list.get(i),versions_date_list.get(i),
+                            versions_publisher_list.get(i),versions_force_list.get(i));
                     versionsList.add(version1);
                     count++;
 
