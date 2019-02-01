@@ -5,18 +5,18 @@ public class Versions {
     private String versionCode;
     private String versionDetail;
     private String versionDate;
-    private String versionReporter;
+    private String versionPublisher;
     private String forceUpdate;
 
 
 
-    public Versions(String versionName, String versionCode, String versionDetail, String versionDate, String versionReporter,
+    public Versions(String versionName, String versionCode, String versionDetail, String versionDate, String versionPublisher,
                     String forceUpdate){
         this.versionCode=versionCode;
         this.versionDate=versionDate;
         this.versionDetail=versionDetail;
         this.versionName=versionName;
-        this.versionReporter=versionReporter;
+        this.versionPublisher=versionPublisher;
         this.forceUpdate=forceUpdate;
 
     }
@@ -37,8 +37,8 @@ public class Versions {
         return versionDate;
     }
 
-    public String getVersionReporter() {
-        return versionReporter;
+    public String getversionPublisher() {
+        return versionPublisher;
     }
 
     public String getForceUpdate() {

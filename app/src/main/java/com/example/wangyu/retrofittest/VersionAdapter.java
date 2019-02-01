@@ -67,7 +67,7 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
         viewHolder.versionCode.setText(versions.getVersionCode());
         viewHolder.versionName.setText(versions.getVersionName());
         viewHolder.versionDate.setText(versions.getVersionDate());
-        viewHolder.versionReporter.setText(versions.getVersionReporter());
+        viewHolder.versionReporter.setText(versions.getversionPublisher());
         viewHolder.versionUpdate.setText(versions.getForceUpdate());
         viewHolder.expandableTextView.setText(versions.getVersionDetail(), mCollapsedStatus, position);
 

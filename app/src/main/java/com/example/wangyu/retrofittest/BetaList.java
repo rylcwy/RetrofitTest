@@ -4,20 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static com.example.wangyu.retrofittest.ProjectListActivity.versions_code_list;
-import static com.example.wangyu.retrofittest.ProjectListActivity.versions_date_list;
-import static com.example.wangyu.retrofittest.ProjectListActivity.versions_force_list;
-import static com.example.wangyu.retrofittest.ProjectListActivity.versions_name_list;
-import static com.example.wangyu.retrofittest.ProjectListActivity.versions_publisher_list;
+import static com.example.wangyu.retrofittest.ProjectListActivity.updateDetailList;
+
 
 public class BetaList extends AppCompatActivity implements LoadListView.IloadListener {
     static List<Versions> versionsList=new ArrayList<>();
@@ -26,15 +23,11 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
     private LoadListView loadListView;
     private TabLayout mTabLayout;
     private int count=0;
+    ProjectListActivity projectListActivity=new ProjectListActivity();
 
-    public static void actionStart(Context context,List<String> data1,List<String> data2,List<String> data3,List<String> data4,List<String> data5,List<String> data6){
+    public static void actionStart(Context context, Parcelable Versions){
         Intent intent=new Intent(context,BetaList.class);
-        intent.putExtra("version_info","version_code");
-        intent.putExtra("update_detail","update_detail");
-        intent.putExtra("version_info","version_name");
-        intent.putExtra("version_info","version_publisher");
-        intent.putExtra("version_info","version_date");
-        intent.putExtra("version_info","version_force");
+        intent.putExtra("version",Versions);
         context.startActivity(intent);
     }
 
@@ -52,15 +45,17 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
     }
 
     private void initVersions(){
-        for (int i =0;i<10;i++){
-            Versions version1=new Versions(versions_name_list.get(i),versions_code_list.get(i),ProjectListActivity.update_detail_list.get(i),versions_date_list.get(i),
-                    versions_publisher_list.get(i),versions_force_list.get(i));
+
+        for (int i=0;i<projectListActivity.Versions.size();i++){
+            Versions version1=new Versions(projectListActivity.Versions.get(i).versionName,projectListActivity.Versions.get(i).versionCode,
+                    updateDetailList.get(i), projectListActivity.Versions.get(i).versionForce,
+                    projectListActivity.Versions.get(i).versionPublisher,projectListActivity.Versions.get(i).versonDate);
             versionsList.add(version1);
         }
 
-
-
     }
+
+
 
     @Override
     public void onLoad() {
@@ -71,15 +66,11 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
             public void run() {
                 // TODO Auto-generated method stub
                 ProjectListActivity.getBetaList(2);
-                Collections.reverse(versions_name_list);
-                Collections.reverse(versions_code_list);
-                Collections.reverse(versions_date_list);
-                Collections.reverse(versions_publisher_list);
-                Collections.reverse(versions_force_list);
-                for (int i =0;i<10;i++){
-                    Versions version1=new Versions(versions_name_list.get(i),versions_code_list.get(i),ProjectListActivity.update_detail_list.get(i),versions_date_list.get(i),
-                            versions_publisher_list.get(i),versions_force_list.get(i));
-                    versionsList.add(version1);
+                for (int i=0;i<projectListActivity.Versions.size();i++){
+                Versions version1=new Versions(projectListActivity.Versions.get(i).versionName,projectListActivity.Versions.get(i).versionCode,
+                        updateDetailList.get(i), projectListActivity.Versions.get(i).versionForce,
+                        projectListActivity.Versions.get(i).versionPublisher,projectListActivity.Versions.get(i).versonDate);
+                versionsList.add(version1);
                     count++;
 
                 } // 通知listview加载完毕
