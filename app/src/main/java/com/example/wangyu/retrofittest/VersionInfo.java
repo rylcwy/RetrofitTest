@@ -13,6 +13,11 @@ public class VersionInfo implements Parcelable {
     public String versonDate;
 
 
+    public  VersionInfo(){
+
+    }
+
+
     public void setVersionId(String versionId) {
         this.versionId = versionId;
     }

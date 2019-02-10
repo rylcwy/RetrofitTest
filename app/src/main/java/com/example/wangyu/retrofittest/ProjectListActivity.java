@@ -85,15 +85,16 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                                         for (int i=0;i<count;i++){
                                             Versions=new ArrayList<>();
                                             sublist=versionsInfoList.subList(i*7,i*7+6);
-                                            Parcel s=new android.os.Parcel() ;
-                                            VersionInfo versionInfo=new VersionInfo(in);
+
+
+                                            VersionInfo versionInfo=new VersionInfo();
                                                 versionInfo.setVersionId(sublist.get(0));
                                                 versionInfo.setVersionCode(sublist.get(1));
                                                 versionInfo.setVersionName(sublist.get(1));
                                                 versionInfo.setVersionSize(sublist.get(2));
                                                 versionInfo.setVersionForce(sublist.get(3));
                                                 versionInfo.setVersonDate(sublist.get(4));
-                                                Versions.add(versionInfo);
+                                                com.example.wangyu.retrofittest.Versions.add(versionInfo);
 
 
                                         }
