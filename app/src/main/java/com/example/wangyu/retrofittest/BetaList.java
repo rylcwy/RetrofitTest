@@ -34,7 +34,7 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
     private ArrayList<VersionInfo> Versionss=new ArrayList<>();
     private ArrayList<VersionInfo> versionInfoArrayList1;
     private ViewPager mViewPager;
-    private LoadListView loadListView;
+    private static LoadListView loadListView;
     private TabLayout mTabLayout;
     private int count=0;
 
@@ -70,38 +70,54 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
 
 
 
-    public void getBetaList (int pageNumber){
+
+
+    @Override
+    public void onLoad() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(BetaList.this,"hhhh",Toast.LENGTH_LONG).show();
+                BetaList betaList=new BetaList();
+                betaList.getBetaList(2);
+            }
+        }, 2000);
+    }
+
+    private void getBetaList (int pageNumber){
         Call<ResponseBody> getList = MainActivity.res.getTapTapBeta(2);
         getList.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
                     String html = response.body().string();
-                        Document doc = Jsoup.parse(html);
-                        Elements update_detail_e = doc.select("table.table.table-hover tr:nth-child(even)");
-                        Elements versions_info_e = doc.select("table.table.table-hover tr:nth-child(odd) td");
-                        updateDetailList = update_detail_e.eachText();
-                        versionsInfoList = versions_info_e.eachText();
-                        int count=versionsInfoList.size()/7;
-                        int remainder=versionsInfoList.size()%7;
+                    Document doc = Jsoup.parse(html);
+                    Elements update_detail_e = doc.select("table.table.table-hover tr:nth-child(even)");
+                    Elements versions_info_e = doc.select("table.table.table-hover tr:nth-child(odd) td");
+                    updateDetailList = update_detail_e.eachText();
+                    versionsInfoList = versions_info_e.eachText();
+                    int count=versionsInfoList.size()/7;
+                    int remainder=versionsInfoList.size()%7;
 
-                        if (remainder==0){
-                            int detailIndex=0;
-                            for (int i=0;i<count;i++){
-                                VersionInfo versionInfo=new VersionInfo();
-                                sublist=versionsInfoList.subList(i*7,i*7+6);
-                                versionInfo.setVersionId(sublist.get(0));
-                                versionInfo.setVersionCode(sublist.get(1));
-                                versionInfo.setVersionName(sublist.get(1));
-                                versionInfo.setVersionSize(sublist.get(2));
-                                versionInfo.setVersionForce(sublist.get(3));
-                                versionInfo.setVersonDate(sublist.get(4));
-                                versionInfo.setVersionDetail(updateDetailList.get(detailIndex));
-                                detailIndex++;
-                                Versionss.add(versionInfo);
-                            }
+                    if (remainder==0){
+                        int detailIndex=0;
+                        for (int i=0;i<count;i++){
+                            VersionInfo versionInfo=new VersionInfo();
+                            sublist=versionsInfoList.subList(i*7,i*7+6);
+                            versionInfo.setVersionId(sublist.get(0));
+                            versionInfo.setVersionCode(sublist.get(1));
+                            versionInfo.setVersionName(sublist.get(1));
+                            versionInfo.setVersionSize(sublist.get(2));
+                            versionInfo.setVersionForce(sublist.get(3));
+                            versionInfo.setVersonDate(sublist.get(4));
+                            versionInfo.setVersionDetail(updateDetailList.get(detailIndex));
+                            detailIndex++;
+                            Versionss.add(versionInfo);
                         }
+                    }
 
+                    processLoadShow();
                 } catch (IOException e) {
                     System.out.print(e);
 
@@ -121,18 +137,11 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
 
     }
 
-
-
-    @Override
-    public void onLoad() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+    private void processLoadShow() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(BetaList.this,"hhhh",Toast.LENGTH_LONG).show();
-                BetaList betaList=new BetaList();
-                // TODO Auto-generated method stub
-                betaList.getBetaList(2);
+
                 for (int i=0;i<Versionss.size();i++){
                     Versions version2=new Versions(Versionss.get(i).versionId,Versionss.get(i).versionCode,Versionss.get(i).versionDetail,Versionss.get(i).versonDate,
                             Versionss.get(i).versionPublisher,Versionss.get(i).versionForce);
@@ -142,12 +151,8 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
                 } // 通知listview加载完毕
                 loadListView.loadComplete();
             }
-        }, 2000);
-        // TODO Auto-generated method stub
-
+        });
     }
-
-
 
     @Override
     protected void onDestroy() {
