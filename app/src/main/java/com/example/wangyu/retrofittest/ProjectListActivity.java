@@ -125,75 +125,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    public void getBetaList (int pageNumber){
-        Call<ResponseBody> getList = MainActivity.res.getTapTapBeta(2);
-        getList.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                try {
-                    String html = response.body().string();
-                    Log.d("test", "onResponse: "+html);
 
-                    if (html.contains("登录你的账户")) {
-                        Toast.makeText(MyApplication.getContext(), "登录失效，请重新登录", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent();
-                        intent.setAction("android.intent.action.login");
-                        MyApplication.getContext().startActivity(intent);
-                        MainActivity.getToken(new TokenCallbacks() {
-                            @Override
-                            public void onSuccess(@android.support.annotation.NonNull String token) {
-
-                            }
-
-                            @Override
-                            public void onFailure(@android.support.annotation.NonNull Throwable throwable) {
-
-                            }
-                        });
-                    } else {
-                        Document doc = Jsoup.parse(html);
-                        Elements update_detail_e = doc.select("table.table.table-hover tr:nth-child(even)");
-                        Elements versions_info_e = doc.select("table.table.table-hover tr:nth-child(odd) td");
-                        updateDetailList = update_detail_e.eachText();
-                        versionsInfoList = versions_info_e.eachText();
-                        int count=versionsInfoList.size()/7;
-                        int remainder=versionsInfoList.size()%7;
-
-                        if (remainder==0){
-                            int detailIndex=0;
-                            for (int i=0;i<count;i++){
-                                VersionInfo versionInfo=new VersionInfo();
-                                sublist=versionsInfoList.subList(i*7,i*7+6);
-                                //VersionInfo versionInfo=new VersionInfo();
-                                versionInfo.setVersionId(sublist.get(0));
-                                versionInfo.setVersionCode(sublist.get(1));
-                                versionInfo.setVersionName(sublist.get(1));
-                                versionInfo.setVersionSize(sublist.get(2));
-                                versionInfo.setVersionForce(sublist.get(3));
-                                versionInfo.setVersonDate(sublist.get(4));
-                                versionInfo.setVersionDetail(updateDetailList.get(detailIndex));
-                                detailIndex++;
-                                Versions.add(versionInfo);
-                            }
-
-                        }
-                        }
-
-
-                } catch (IOException e) {
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("betalist", "Error " +t);
-
-            }
-        });
-
-    }
 }
 
 
