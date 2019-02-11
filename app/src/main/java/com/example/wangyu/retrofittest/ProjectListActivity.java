@@ -2,7 +2,6 @@ package com.example.wangyu.retrofittest;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +27,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
     public static List<String> versionsInfoList = new ArrayList<String>();
     public static List<String> sublist = new ArrayList<String>();
     public static List<String> updateDetailList = new ArrayList<String>();
-    public List<VersionInfo> Versions;
+    public ArrayList<VersionInfo> Versions=new ArrayList<>();
 
 
     @Override
@@ -82,28 +81,24 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                                     int remainder=versionsInfoList.size()%7;
 
                                     if (remainder==0){
+                                        int detailIndex=0;
                                         for (int i=0;i<count;i++){
-                                            Versions=new ArrayList<>();
-                                            sublist=versionsInfoList.subList(i*7,i*7+6);
-
-
                                             VersionInfo versionInfo=new VersionInfo();
+                                            sublist=versionsInfoList.subList(i*7,i*7+6);
+                                            //VersionInfo versionInfo=new VersionInfo();
                                                 versionInfo.setVersionId(sublist.get(0));
                                                 versionInfo.setVersionCode(sublist.get(1));
                                                 versionInfo.setVersionName(sublist.get(1));
                                                 versionInfo.setVersionSize(sublist.get(2));
                                                 versionInfo.setVersionForce(sublist.get(3));
                                                 versionInfo.setVersonDate(sublist.get(4));
-                                                com.example.wangyu.retrofittest.Versions.add(versionInfo);
-
-
+                                                versionInfo.setVersionDetail(updateDetailList.get(detailIndex));
+                                                detailIndex++;
+                                                Versions.add(versionInfo);
                                         }
 
                                     }
-
-
-
-                                    BetaList.actionStart(MyApplication.getContext(), Versions,updateDetailList);
+                                    BetaList.actionStart(MyApplication.getContext(), Versions);
 
                                 }
 
@@ -130,7 +125,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    public static void getBetaList (int pageNumber){
+    public void getBetaList (int pageNumber){
         Call<ResponseBody> getList = MainActivity.res.getTapTapBeta(2);
         getList.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -161,6 +156,27 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                         Elements versions_info_e = doc.select("table.table.table-hover tr:nth-child(odd) td");
                         updateDetailList = update_detail_e.eachText();
                         versionsInfoList = versions_info_e.eachText();
+                        int count=versionsInfoList.size()/7;
+                        int remainder=versionsInfoList.size()%7;
+
+                        if (remainder==0){
+                            int detailIndex=0;
+                            for (int i=0;i<count;i++){
+                                VersionInfo versionInfo=new VersionInfo();
+                                sublist=versionsInfoList.subList(i*7,i*7+6);
+                                //VersionInfo versionInfo=new VersionInfo();
+                                versionInfo.setVersionId(sublist.get(0));
+                                versionInfo.setVersionCode(sublist.get(1));
+                                versionInfo.setVersionName(sublist.get(1));
+                                versionInfo.setVersionSize(sublist.get(2));
+                                versionInfo.setVersionForce(sublist.get(3));
+                                versionInfo.setVersonDate(sublist.get(4));
+                                versionInfo.setVersionDetail(updateDetailList.get(detailIndex));
+                                detailIndex++;
+                                Versions.add(versionInfo);
+                            }
+
+                        }
                         }
 
 

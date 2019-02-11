@@ -1,9 +1,8 @@
 package com.example.wangyu.retrofittest;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class VersionInfo implements Parcelable {
+public class VersionInfo implements Serializable {
     public String versionId;
     public String versionCode;
     public String versionName;
@@ -11,12 +10,22 @@ public class VersionInfo implements Parcelable {
     public String versionForce;
     public String versionPublisher;
     public String versonDate;
+    public String versionDetail;
 
 
     public  VersionInfo(){
 
+
     }
 
+    public String getVersionDetail() {
+        return versionDetail;
+    }
+
+
+    public void setVersionDetail(String versionDetail) {
+        this.versionDetail = versionDetail;
+    }
 
     public void setVersionId(String versionId) {
         this.versionId = versionId;
@@ -75,36 +84,8 @@ public class VersionInfo implements Parcelable {
         return versionId;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
 
-    }
 
-    protected VersionInfo(Parcel in) {
-        versionId = in.readString();
-        versionCode = in.readString();
-        versionName = in.readString();
-        versionSize = in.readString();
-        versionForce = in.readString();
-        versionPublisher=in.readString();
-        versonDate=in.readString();
 
-    }
-
-    public static final Creator<VersionInfo> CREATOR = new Creator<VersionInfo>() {
-        @Override
-        public VersionInfo createFromParcel(Parcel in) {
-            return new VersionInfo(in);
-        }
-
-        @Override
-        public VersionInfo[] newArray(int size) {
-            return new VersionInfo[size];
-        }
-    };
 }
