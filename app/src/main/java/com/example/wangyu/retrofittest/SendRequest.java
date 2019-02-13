@@ -15,10 +15,10 @@ public interface SendRequest {
 
     @POST("/login")
     @FormUrlEncoded
-    Call<ResponseBody> getApps(@Field("email") String email, @Field("password") String password, @Field("_token") String token);
+    Call<ResponseBody> login(@Field("email") String email, @Field("password") String password, @Field("_token") String token);
 
     @GET("/")
-    Call<ResponseBody> getApps_islogin();
+    Call<ResponseBody> getAppsRedirect();
 
     @GET("/application/582aaa0455554/releases?")
     Call<ResponseBody> getTapTapBeta(@Query("page") int page);

@@ -15,7 +15,7 @@ import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import java.util.List;
 
-import static com.example.wangyu.retrofittest.BetaList.versionsList;
+import static com.example.wangyu.retrofittest.BetaListActivity.versionsList;
 
 public class VersionAdapter extends ArrayAdapter<Versions>{
     private int resourceId;

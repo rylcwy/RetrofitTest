@@ -26,7 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class BetaList extends AppCompatActivity implements LoadListView.IloadListener {
+public class BetaListActivity extends AppCompatActivity implements LoadListView.IloadListener {
     static List<Versions> versionsList=new ArrayList<>();
     public static List<String> versionsInfoList = new ArrayList<>();
     public static List<String> sublist = new ArrayList<>();
@@ -37,10 +37,11 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
     private static LoadListView loadListView;
     private TabLayout mTabLayout;
     private int count=0;
+    private static int pages=2;
 
 
     public static void actionStart(Context context, ArrayList versionInfoArrayList){
-        Intent intent=new Intent(context,BetaList.class);
+        Intent intent=new Intent(context,BetaListActivity.class);
         intent.putExtra("version",(Serializable) versionInfoArrayList);
         context.startActivity(intent);
     }
@@ -53,7 +54,7 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
         Intent intent=getIntent();
         versionInfoArrayList1=(ArrayList<VersionInfo>)getIntent().getSerializableExtra("version");
         initVersions();
-        VersionAdapter adapter=new VersionAdapter(BetaList.this,R.layout.versions_item,versionsList);
+        VersionAdapter adapter=new VersionAdapter(BetaListActivity.this,R.layout.versions_item,versionsList);
         loadListView=(LoadListView)findViewById(R.id.beta_list);
         loadListView.setAdapter(adapter);
         loadListView.setInterface(this);
@@ -62,7 +63,7 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
 
     private void initVersions(){
         for (int i=0;i<versionInfoArrayList1.size();i++){
-            Versions version1=new Versions(versionInfoArrayList1.get(i).versionId,versionInfoArrayList1.get(i).versionCode,versionInfoArrayList1.get(i).versionDetail,versionInfoArrayList1.get(i).versonDate,
+            Versions version1=new Versions(versionInfoArrayList1.get(i).versionCode,versionInfoArrayList1.get(i).versionCode,versionInfoArrayList1.get(i).versionDetail,versionInfoArrayList1.get(i).versonDate,
                     versionInfoArrayList1.get(i).versionPublisher,versionInfoArrayList1.get(i).versionForce);
             versionsList.add(version1);
         }
@@ -78,15 +79,15 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(BetaList.this,"hhhh",Toast.LENGTH_LONG).show();
-                BetaList betaList=new BetaList();
-                betaList.getBetaList(2);
+                Toast.makeText(BetaListActivity.this,"pages"+pages,Toast.LENGTH_LONG).show();
+                BetaListActivity betaList=new BetaListActivity();
+                betaList.getBetaList(pages);
             }
         }, 2000);
     }
 
     private void getBetaList (int pageNumber){
-        Call<ResponseBody> getList = MainActivity.res.getTapTapBeta(2);
+        Call<ResponseBody> getList = MainActivity.res.getTapTapBeta(pageNumber);
         getList.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -109,13 +110,14 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
                             versionInfo.setVersionCode(sublist.get(1));
                             versionInfo.setVersionName(sublist.get(1));
                             versionInfo.setVersionSize(sublist.get(2));
-                            versionInfo.setVersionForce(sublist.get(3));
-                            versionInfo.setVersonDate(sublist.get(4));
+                            versionInfo.setVersionPublisher(sublist.get(4));
+                            versionInfo.setVersonDate(sublist.get(5));
                             versionInfo.setVersionDetail(updateDetailList.get(detailIndex));
                             detailIndex++;
                             Versionss.add(versionInfo);
                         }
                     }
+                    pages++;
 
                     processLoadShow();
                 } catch (IOException e) {
@@ -143,7 +145,7 @@ public class BetaList extends AppCompatActivity implements LoadListView.IloadLis
             public void run() {
 
                 for (int i=0;i<Versionss.size();i++){
-                    Versions version2=new Versions(Versionss.get(i).versionId,Versionss.get(i).versionCode,Versionss.get(i).versionDetail,Versionss.get(i).versonDate,
+                    Versions version2=new Versions(Versionss.get(i).versionCode,Versionss.get(i).versionCode,Versionss.get(i).versionDetail,Versionss.get(i).versonDate,
                             Versionss.get(i).versionPublisher,Versionss.get(i).versionForce);
                     versionsList.add(version2);
                     count++;

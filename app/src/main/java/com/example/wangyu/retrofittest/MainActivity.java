@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.webkit.CookieManager;
 
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -32,15 +31,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity {
-
     public static String realtoken;
     public static String token;
-    public static String cookieStr="";
     public static CheckLogin checkLogin;
-    public CookieManager cookieManager;
     public static OkHttpClient client;
-    public static Retrofit retrofitLogin;
+    public static Retrofit retrofit;
     public static SendRequest res;
+    public static String baseUrl="https://versions.xmxdev.com";
 
 
     @SuppressLint("TrulyRandom")
@@ -88,17 +85,17 @@ public class MainActivity extends AppCompatActivity {
         client=new OkHttpClient.Builder()
                 .hostnameVerifier(new TrustAllHostnameVerifier())
                 .sslSocketFactory(createSSLSocketFactory())
-                .cookieJar(new com.example.wangyu.retrofittest.CookieManager(MainActivity.this))
+                .cookieJar(new com.example.wangyu.retrofittest.CookieManager(MyApplication.getContext()))
                 .connectTimeout(30,TimeUnit.SECONDS)
                 .build();
 
-        retrofitLogin=new Retrofit.Builder()
-                .baseUrl("https://versions.xmxdev.com")
+        retrofit=new Retrofit.Builder()
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
 
-        res=retrofitLogin.create(SendRequest.class);
+        res=retrofit.create(SendRequest.class);
 
         if (CheckLogin.getLoginState()) {
             Intent intent=new Intent();
@@ -123,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-
     }
 
     public static void getToken(final TokenCallbacks callbacks) {
@@ -142,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
                             Matcher m =p.matcher(test2);
                             while(m.find()){
                                 token=m.group(1);
-                                Log.d("MainActivity", "token: "+token);
                                 callbacks.onSuccess(token);
                             }
                         } catch (Exception e) {
@@ -152,12 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    Log.d("MainActivity", "onFailure: " + t);
-
                 }
             });
-
-
-
     }
 }

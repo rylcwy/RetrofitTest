@@ -91,14 +91,15 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                                                 versionInfo.setVersionName(sublist.get(1));
                                                 versionInfo.setVersionSize(sublist.get(2));
                                                 versionInfo.setVersionForce(sublist.get(3));
-                                                versionInfo.setVersonDate(sublist.get(4));
+                                                versionInfo.setVersionPublisher(sublist.get(4));
+                                                versionInfo.setVersonDate(sublist.get(5));
                                                 versionInfo.setVersionDetail(updateDetailList.get(detailIndex));
                                                 detailIndex++;
                                                 Versions.add(versionInfo);
                                         }
 
                                     }
-                                    BetaList.actionStart(MyApplication.getContext(), Versions);
+                                    BetaListActivity.actionStart(MyApplication.getContext(), Versions);
 
                                 }
 
@@ -118,13 +119,18 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
 
                 }
                 break;
-             default:
-                 break;
+
+            case R.id.TapTap:
+                break;
+
+            case R.id.TapTap_Pad:
+                break;
+
+            default:
+                break;
         }
 
     }
-
-
 
 }
 

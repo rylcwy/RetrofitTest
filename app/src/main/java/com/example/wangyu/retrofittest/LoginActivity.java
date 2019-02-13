@@ -87,7 +87,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             .client(MainActivity.client)
             .build();
 
-    public static SendRequest res1=retrofitLogin1.create(SendRequest.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,32 +103,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public int logIn(LoginCallbacks loginCallbacks){
 
-        final Call<ResponseBody> logincall=res1.getApps(useremail,userpassword,token);
+        final Call<ResponseBody> login=MainActivity.res.login(useremail,userpassword,token);
 
-        logincall.enqueue(new Callback<ResponseBody>() {
+        login.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response1) {
                 try{
-                    final Call<ResponseBody> logincall2=res1.getApps_islogin();
-                    logincall2.enqueue(new Callback<ResponseBody>() {
+                    final Call<ResponseBody> loginRedirect=MainActivity.res.getAppsRedirect();
+                    loginRedirect.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             responseCode=response.code();
-                            if (responseCode!=200){
-                                Toast.makeText(LoginActivity.this,"登陆错误"+response.code(),Toast.LENGTH_SHORT).show();
+                            try {
+                                if (response.body().string().contains("登录你的账户")||response.body().string().contains("记住我")){
+                                    Toast.makeText(MyApplication.getContext(),"登陆失败",Toast.LENGTH_SHORT).show();
+                                }
 
-                            }
-                            try{
-                                Log.d("nb", "onResponse: "+response.body().string());
+                                else {
+                                    Intent intent=new Intent();
+                                    intent.setAction("android.intent.action.projectlist");
+                                    startActivity(intent);
+                                }
+
                             }
                             catch (IOException e ){
-                                Toast.makeText(LoginActivity.this,"登陆错误"+response.code(),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MyApplication.getContext(),"登陆错误"+response.code(),Toast.LENGTH_SHORT).show();
 
                             }
 
-                            Intent intent=new Intent();
-                            intent.setAction("android.intent.action.projectlist");
-                            startActivity(intent);
+
 
                         }
 
@@ -188,8 +190,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             default:
                 break;
         }
-
-
             }
 }
 
