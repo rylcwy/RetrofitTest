@@ -32,7 +32,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
-    public void onClick(final View v) {
+    public void onClick(View v) {
         ProjectHandler projectHandler = new ProjectHandler();
         switch (v.getId()) {
             case R.id.TapTap_Beta:
@@ -45,8 +45,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.TapTap:
-                TapTapProjectFetcher tapTapProjectFetcher = new TapTapProjectFetcher();
-                projectHandler.onClick(tapTapProjectFetcher);
+                projectHandler.onClick(new TapTapProjectFetcher());
                 break;
 
             case R.id.TapTap_Pad:
