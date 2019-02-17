@@ -9,7 +9,6 @@ import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 
 public class CookieManager implements CookieJar{
-    public static final String logtag="cookies";
     private PersistentCookieStore cookieStore;
     public CookieManager(Context context){
         cookieStore=new PersistentCookieStore(context);

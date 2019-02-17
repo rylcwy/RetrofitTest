@@ -19,7 +19,10 @@ public class PersistentCookieStore {
     public static SharedPreferences cookiePrefs;
     public static SharedPreferences loginstatusPrefs;
 
+
     public PersistentCookieStore(Context context) {
+
+        context=MyApplication.getContext();
 
         cookiePrefs = context.getSharedPreferences(COOKIE_PREFS, 0);
         loginstatusPrefs=context.getSharedPreferences(LOGIN_STATUS,0);

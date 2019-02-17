@@ -19,13 +19,12 @@ import retrofit2.Response;
 
 public class ProjectHandler {
     private String html;
-    private List<String> versionsInfoList = new ArrayList<String>();
+    private List<String> versionsInfoList = new ArrayList<>();
     private List<String> sublist = new ArrayList<String>();
     private List<String> updateDetailList = new ArrayList<String>();
     private ArrayList<VersionInfo> Versions=new ArrayList<>();
 
-    public void onClick(ProjectResponseFetcher fetcher) {
-        //gtyhujk,l
+    public void getList(ProjectResponseFetcher fetcher) {
         Call<ResponseBody> betaListCall = fetcher.getCallableResponse();
         betaListCall.enqueue(new Callback<ResponseBody>() {
             @Override

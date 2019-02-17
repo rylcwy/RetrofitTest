@@ -24,7 +24,7 @@ public interface SendRequest {
     Call<ResponseBody> getTapTapBeta(@Query("page") int page);
 
     @GET("/application/582aaa0455554/releases?")
-    Call<ResponseBody> getTapTap(@Query("page") int page);
+    Call<ResponseBody> getTapTapRelease(@Query("page") int page);
 
 
 

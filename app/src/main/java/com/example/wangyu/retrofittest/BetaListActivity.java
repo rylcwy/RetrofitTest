@@ -48,7 +48,6 @@ public class BetaListActivity extends AppCompatActivity implements LoadListView.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("Beta1", "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beta_list);
         Intent intent=getIntent();
