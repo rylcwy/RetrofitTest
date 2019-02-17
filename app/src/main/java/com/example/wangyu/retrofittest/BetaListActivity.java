@@ -87,8 +87,8 @@ public class BetaListActivity extends AppCompatActivity implements LoadListView.
     }
 
     private void getBetaList (int pageNumber){
-        Call<ResponseBody> getList = MainActivity.res.getTapTapBeta(pageNumber);
-        getList.enqueue(new Callback<ResponseBody>() {
+        Call<ResponseBody> getBetaListCall = RetrofitCommunication.getRes().getTapTapBeta(pageNumber);
+        getBetaListCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
