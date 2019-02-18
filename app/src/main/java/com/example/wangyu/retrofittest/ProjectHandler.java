@@ -19,43 +19,38 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProjectHandler {
-    private String html;
-    private List<String> versionsInfoList = new ArrayList<>();
-    private List<String> sublist = new ArrayList<String>();
-    private List<String> updateDetailList = new ArrayList<String>();
-    private ArrayList<VersionInfo> Versions=new ArrayList<>();
-    private String listName;
 
-    public void getList(ProjectResponseFetcher fetcher) {
-        Call<ResponseBody> listCall = fetcher.getCallableResponse();
+    private ArrayList<VersionInfo> toVersionInfoList(Call<ResponseBody> listCall) {
+        final ArrayList<VersionInfo> versionInfoResult = new ArrayList<>();
         listCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                List<String> versionsInfoList = new ArrayList<>();
+                List<String> sublist = new ArrayList<String>();
+                List<String> updateDetailList = new ArrayList<String>();
                 try {
-                    html = response.body().string();
+                    String html = response.body().string();
                     if (html.contains("登录你的账户")) {
                         Toast.makeText(MyApplication.getContext(), "登录失效，请重新登录", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.setAction("android.intent.action.login");
                         MyApplication.getContext().startActivity(intent);
-                    }
-
-                    else {
+                    } else {
                         Document doc = Jsoup.parse(html);
-                        Elements name=doc.select("a.nav-link");
-                        listName=name.eachText().get(2);
-                        Log.d("1111", "onResponse: "+listName);
+                        Elements name = doc.select("a.nav-link");
+                        String listName = name.eachText().get(2);
+                        Log.d("1111", "onResponse: " + listName);
                         Elements versionDetailElements = doc.select("table.table.table-hover tr:nth-child(even)");
                         Elements versionsInfoElements = doc.select("table.table.table-hover tr:nth-child(odd) td");
                         updateDetailList = versionDetailElements.eachText();
                         versionsInfoList = versionsInfoElements.eachText();
-                        int count=versionsInfoList.size()/7;
-                        int remainder=versionsInfoList.size()%7;
-                        if (remainder==0){
-                            int detailIndex=0;
-                            for (int i=0;i<count;i++){
-                                VersionInfo versionInfo=new VersionInfo();
-                                sublist=versionsInfoList.subList(i*7,i*7+6);
+                        int count = versionsInfoList.size() / 7;
+                        int remainder = versionsInfoList.size() % 7;
+                        if (remainder == 0) {
+                            int detailIndex = 0;
+                            for (int i = 0; i < count; i++) {
+                                VersionInfo versionInfo = new VersionInfo();
+                                sublist = versionsInfoList.subList(i * 7, i * 7 + 6);
                                 //VersionInfo versionInfo=new VersionInfo();
                                 versionInfo.setVersionId(sublist.get(0));
                                 versionInfo.setVersionCode(sublist.get(1));
@@ -66,22 +61,23 @@ public class ProjectHandler {
                                 versionInfo.setVersonDate(sublist.get(5));
                                 versionInfo.setVersionDetail(updateDetailList.get(detailIndex));
                                 detailIndex++;
-                                Versions.add(versionInfo);
+                                versionInfoResult.add(versionInfo);
                             }
                         }
-                        ListActivity.actionStart(MyApplication.getContext(), Versions,listName );
                     }
 
                 } catch (IOException e) {
-                    LogUtil.e("ProjectActivity","get TapTapBeta list call error");
+                    LogUtil.e("ProjectActivity", "get TapTapBeta list call error");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                LogUtil.e("ProjectActivity","get TapTapBeta list call error");
+                LogUtil.e("ProjectActivity", "get TapTapBeta list call error");
 
             }
         });
+
+        return versionInfoResult;
     }
 }

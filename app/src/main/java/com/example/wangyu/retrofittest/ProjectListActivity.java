@@ -26,42 +26,21 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        ProjectHandler projectHandler = new ProjectHandler();
         switch (v.getId()) {
             case R.id.TapTap_Beta:
-                projectHandler.getList(new ProjectResponseFetcher() {
-                    @Override
-                    public Call<ResponseBody> getCallableResponse() {
-                        return RetrofitCommunication.getRes().getTapTapBeta(1);
-                    }
-                });
+                ListActivity.actionStart(MyApplication.getContext(), new BetaProjectResponseFetcher());
                 break;
 
             case R.id.TapTap:
-                projectHandler.getList(new ProjectResponseFetcher(){
-                    @Override
-                    public Call<ResponseBody> getCallableResponse() {
-                        return RetrofitCommunication.getRes().getTapTapRelease(1);
-                    }
-                });
+                ListActivity.actionStart(MyApplication.getContext(), new ReleaseProjectResponseFetcher());
                 break;
 
             case R.id.TapTap_Pad:
-                projectHandler.getList(new ProjectResponseFetcher(){
-                    @Override
-                    public Call<ResponseBody> getCallableResponse() {
-                        return RetrofitCommunication.getRes().getTapTapHD(1);
-                    }
-                });
+                ListActivity.actionStart(MyApplication.getContext(), new HdProjectResponseFetcher());
                 break;
 
             case R.id.TapTap_international:
-                projectHandler.getList(new ProjectResponseFetcher(){
-                    @Override
-                    public Call<ResponseBody> getCallableResponse() {
-                        return RetrofitCommunication.getRes().getTapTapInternational(1);
-                    }
-                });
+                ListActivity.actionStart(MyApplication.getContext(), new InternationalProjectResponseFetcher());
                 break;
 
             default:
@@ -70,6 +49,41 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    public static class BetaProjectResponseFetcher implements ProjectResponseFetcher {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Call<ResponseBody> getCallableResponse(int pageNumber) {
+            return RetrofitCommunication.getRes().getTapTapBeta(pageNumber);
+        }
+    }
+
+    public static class ReleaseProjectResponseFetcher implements ProjectResponseFetcher {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Call<ResponseBody> getCallableResponse(int pageNumber) {
+            return RetrofitCommunication.getRes().getTapTapRelease(pageNumber);
+        }
+    }
+
+    public static class HdProjectResponseFetcher implements ProjectResponseFetcher {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Call<ResponseBody> getCallableResponse(int pageNumber) {
+            return RetrofitCommunication.getRes().getTapTapHD(pageNumber);
+        }
+    }
+
+    public static class InternationalProjectResponseFetcher implements ProjectResponseFetcher {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Call<ResponseBody> getCallableResponse(int pageNumber) {
+            return RetrofitCommunication.getRes().getTapTapInternational(pageNumber);
+        }
+    }
 }
 
 

@@ -15,20 +15,18 @@ import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import java.util.List;
 
-import static com.example.wangyu.retrofittest.ListActivity.versionsList;
-
 public class VersionAdapter extends ArrayAdapter<Versions>{
     private int resourceId;
     private final Context mContext;
     private final SparseBooleanArray mCollapsedStatus;
+    private List<Versions> versionsList;
 
-
-    public VersionAdapter(Context context, int textViewResourceId,List<Versions> objects){
-        super(context,textViewResourceId,objects);
+    public VersionAdapter(Context context, int textViewResourceId, List<Versions> versionsList){
+        super(context, textViewResourceId, versionsList);
         resourceId=textViewResourceId;
         mContext=context;
         mCollapsedStatus = new SparseBooleanArray();
-
+        this.versionsList = versionsList;
 
     }
 
