@@ -17,9 +17,11 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
         Button betaButton = (Button) findViewById(R.id.TapTap_Beta);
         Button releaseButton = (Button) findViewById(R.id.TapTap);
         Button padButton = (Button) findViewById(R.id.TapTap_Pad);
+        Button internationalButton = (Button) findViewById(R.id.TapTap_international);
         betaButton.setOnClickListener(this);
         releaseButton.setOnClickListener(this);
         padButton.setOnClickListener(this);
+        internationalButton.setOnClickListener(this);
     }
 
     @Override
@@ -45,6 +47,21 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.TapTap_Pad:
+                projectHandler.getList(new ProjectResponseFetcher(){
+                    @Override
+                    public Call<ResponseBody> getCallableResponse() {
+                        return RetrofitCommunication.getRes().getTapTapHD(1);
+                    }
+                });
+                break;
+
+            case R.id.TapTap_international:
+                projectHandler.getList(new ProjectResponseFetcher(){
+                    @Override
+                    public Call<ResponseBody> getCallableResponse() {
+                        return RetrofitCommunication.getRes().getTapTapInternational(1);
+                    }
+                });
                 break;
 
             default:

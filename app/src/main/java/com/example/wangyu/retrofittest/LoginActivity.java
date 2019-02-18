@@ -24,10 +24,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static String userpassword;
     public static CheckBox rememberMe;
     public static String CheckBoxState;
-    public static int responseCode;
-    LoginComponent loginComponent=new LoginComponent();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

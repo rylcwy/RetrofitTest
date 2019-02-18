@@ -23,8 +23,14 @@ public interface SendRequest {
     @GET("/application/582aaa0455554/releases?")
     Call<ResponseBody> getTapTapBeta(@Query("page") int page);
 
-    @GET("/application/582aaa0455554/releases?")
+    @GET("/application/56aef1a629826/releases?")
     Call<ResponseBody> getTapTapRelease(@Query("page") int page);
+
+    @GET("/application/5bbad47019443/releases?")
+    Call<ResponseBody> getTapTapHD(@Query("page") int page);
+
+    @GET("/application/5a6addec82df6/releases?")
+    Call<ResponseBody> getTapTapInternational(@Query("page") int page);
 
 
 

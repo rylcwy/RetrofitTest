@@ -14,20 +14,21 @@ public class PersistentCookieStore {
 
     private final String COOKIE_PREFS = "Cookies_Prefs";
     private final String LOGIN_STATUS = "Login_Status";
-    public static SharedPreferences.Editor prefsWriter;
-    public static SharedPreferences.Editor loginstatueWriter;
-    public static SharedPreferences cookiePrefs;
-    public static SharedPreferences loginstatusPrefs;
+    private SharedPreferences.Editor prefsWriter;
+    private SharedPreferences.Editor loginstatueWriter;
+    private static SharedPreferences cookiePrefs;
+    private static SharedPreferences loginstatusPrefs;
 
 
     public PersistentCookieStore(Context context) {
-
-        context=MyApplication.getContext();
-
         cookiePrefs = context.getSharedPreferences(COOKIE_PREFS, 0);
         loginstatusPrefs=context.getSharedPreferences(LOGIN_STATUS,0);
 
         Map<String, ?> prefsMap = cookiePrefs.getAll();
+    }
+
+    public static SharedPreferences getLoginstatusPrefs() {
+        return loginstatusPrefs;
     }
 
     protected String getCookieToken(Cookie cookie) {
@@ -43,13 +44,13 @@ public class PersistentCookieStore {
     public void persist(List<Cookie> cookies){
         for (Cookie cookie: cookies) {
             if (cookie.persistent() && cookie.domain() != null && cookie.domain().endsWith(DOMAIN)) {
-                prefsWriter = cookiePrefs.edit();
-                prefsWriter.putString(cookie.name(), cookie.value());
-                prefsWriter.apply();
+                this.prefsWriter = cookiePrefs.edit();
+                this.prefsWriter.putString(cookie.name(), cookie.value());
+                this.prefsWriter.apply();
 
-                loginstatueWriter=loginstatusPrefs.edit();
-                loginstatueWriter.putBoolean("isLogin",true);
-                loginstatueWriter.apply();
+                this.loginstatueWriter=loginstatusPrefs.edit();
+                this.loginstatueWriter.putBoolean("isLogin",true);
+                this.loginstatueWriter.apply();
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.example.wangyu.retrofittest;
 
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.jsoup.Jsoup;
@@ -23,10 +24,11 @@ public class ProjectHandler {
     private List<String> sublist = new ArrayList<String>();
     private List<String> updateDetailList = new ArrayList<String>();
     private ArrayList<VersionInfo> Versions=new ArrayList<>();
+    private String listName;
 
     public void getList(ProjectResponseFetcher fetcher) {
-        Call<ResponseBody> betaListCall = fetcher.getCallableResponse();
-        betaListCall.enqueue(new Callback<ResponseBody>() {
+        Call<ResponseBody> listCall = fetcher.getCallableResponse();
+        listCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
@@ -40,6 +42,9 @@ public class ProjectHandler {
 
                     else {
                         Document doc = Jsoup.parse(html);
+                        Elements name=doc.select("a.nav-link");
+                        listName=name.eachText().get(2);
+                        Log.d("1111", "onResponse: "+listName);
                         Elements versionDetailElements = doc.select("table.table.table-hover tr:nth-child(even)");
                         Elements versionsInfoElements = doc.select("table.table.table-hover tr:nth-child(odd) td");
                         updateDetailList = versionDetailElements.eachText();
@@ -64,7 +69,7 @@ public class ProjectHandler {
                                 Versions.add(versionInfo);
                             }
                         }
-                        BetaListActivity.actionStart(MyApplication.getContext(), Versions);
+                        ListActivity.actionStart(MyApplication.getContext(), Versions,listName );
                     }
 
                 } catch (IOException e) {

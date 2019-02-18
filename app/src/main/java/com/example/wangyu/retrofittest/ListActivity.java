@@ -8,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,11 +25,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class BetaListActivity extends AppCompatActivity implements LoadListView.IloadListener {
+public class ListActivity extends AppCompatActivity implements LoadListView.IloadListener {
     static List<Versions> versionsList=new ArrayList<>();
-    public static List<String> versionsInfoList = new ArrayList<>();
-    public static List<String> sublist = new ArrayList<>();
-    public static List<String> updateDetailList = new ArrayList<>();
+    private static List<String> versionsInfoList = new ArrayList<>();
+    private static List<String> sublist = new ArrayList<>();
+    private static List<String> updateDetailList = new ArrayList<>();
     private ArrayList<VersionInfo> Versionss=new ArrayList<>();
     private ArrayList<VersionInfo> versionInfoArrayList1;
     private ViewPager mViewPager;
@@ -38,11 +37,13 @@ public class BetaListActivity extends AppCompatActivity implements LoadListView.
     private TabLayout mTabLayout;
     private int count=0;
     private static int pages=2;
+    private String listNames;
 
 
-    public static void actionStart(Context context, ArrayList versionInfoArrayList){
-        Intent intent=new Intent(context,BetaListActivity.class);
+    public static void actionStart(Context context, ArrayList versionInfoArrayList,String listName){
+        Intent intent=new Intent(context,ListActivity.class);
         intent.putExtra("version",(Serializable) versionInfoArrayList);
+        intent.putExtra("listname",listName);
         context.startActivity(intent);
     }
 
@@ -52,8 +53,9 @@ public class BetaListActivity extends AppCompatActivity implements LoadListView.
         setContentView(R.layout.activity_beta_list);
         Intent intent=getIntent();
         versionInfoArrayList1=(ArrayList<VersionInfo>)getIntent().getSerializableExtra("version");
+        listNames=getIntent().getStringExtra("listname");
         initVersions();
-        VersionAdapter adapter=new VersionAdapter(BetaListActivity.this,R.layout.versions_item,versionsList);
+        VersionAdapter adapter=new VersionAdapter(ListActivity.this,R.layout.versions_item,versionsList);
         loadListView=(LoadListView)findViewById(R.id.beta_list);
         loadListView.setAdapter(adapter);
         loadListView.setInterface(this);
@@ -62,31 +64,35 @@ public class BetaListActivity extends AppCompatActivity implements LoadListView.
 
     private void initVersions(){
         for (int i=0;i<versionInfoArrayList1.size();i++){
-            Versions version1=new Versions(versionInfoArrayList1.get(i).versionCode,versionInfoArrayList1.get(i).versionCode,versionInfoArrayList1.get(i).versionDetail,versionInfoArrayList1.get(i).versonDate,
-                    versionInfoArrayList1.get(i).versionPublisher,versionInfoArrayList1.get(i).versionForce);
+            Versions version1=new Versions(versionInfoArrayList1.get(i).getVersionCode(),versionInfoArrayList1.get(i).getVersionCode(),versionInfoArrayList1.get(i).getVersionDetail(),versionInfoArrayList1.get(i).getVersonDate(),
+                    versionInfoArrayList1.get(i).getVersionPublisher(),versionInfoArrayList1.get(i).getVersionForce());
             versionsList.add(version1);
         }
     }
 
-
-
-
-
     @Override
     public void onLoad() {
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(BetaListActivity.this,"pages"+pages,Toast.LENGTH_LONG).show();
-                BetaListActivity betaList=new BetaListActivity();
-                betaList.getBetaList(pages);
-            }
-        }, 2000);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getBetaList(2);
+
+                }
+            }, 2000);
+
     }
 
     private void getBetaList (int pageNumber){
-        Call<ResponseBody> getBetaListCall = RetrofitCommunication.getRes().getTapTapBeta(pageNumber);
+        Call<ResponseBody> getBetaListCall=null;
+        if (listNames=="TapTap"){
+            getBetaListCall = RetrofitCommunication.getRes().getTapTapRelease(pageNumber);
+        }
+
+        else {
+            getBetaListCall = RetrofitCommunication.getRes().getTapTapBeta(pageNumber);
+        }
+
         getBetaListCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -144,8 +150,8 @@ public class BetaListActivity extends AppCompatActivity implements LoadListView.
             public void run() {
 
                 for (int i=0;i<Versionss.size();i++){
-                    Versions version2=new Versions(Versionss.get(i).versionCode,Versionss.get(i).versionCode,Versionss.get(i).versionDetail,Versionss.get(i).versonDate,
-                            Versionss.get(i).versionPublisher,Versionss.get(i).versionForce);
+                    Versions version2=new Versions(Versionss.get(i).getVersionCode(),Versionss.get(i).getVersionCode(),Versionss.get(i).getVersionDetail(),Versionss.get(i).getVersonDate(),
+                            Versionss.get(i).getVersionPublisher(),Versionss.get(i).getVersionForce());
                     versionsList.add(version2);
                     count++;
 

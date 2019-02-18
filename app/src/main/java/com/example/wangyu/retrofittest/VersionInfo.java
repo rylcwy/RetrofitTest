@@ -3,14 +3,14 @@ package com.example.wangyu.retrofittest;
 import java.io.Serializable;
 
 public class VersionInfo implements Serializable {
-    public String versionId;
-    public String versionCode;
-    public String versionName;
-    public String versionSize;
-    public String versionForce;
-    public String versionPublisher;
-    public String versonDate;
-    public String versionDetail;
+    private String versionId;
+    private String versionCode;
+    private String versionName;
+    private String versionSize;
+    private String versionForce;
+    private String versionPublisher;
+    private String versonDate;
+    private String versionDetail;
 
 
     public  VersionInfo(){
