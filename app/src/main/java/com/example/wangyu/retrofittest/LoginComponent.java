@@ -15,16 +15,16 @@ public class LoginComponent {
     private static String logintoken;
 
     public static String getToken() {
-        Call<ResponseBody> call = RetrofitCommunication.getRes().getCookie();
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<ResponseBody> getTokenCall = RetrofitCommunication.getRes().getCookie();
+        getTokenCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse (@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if ( response.body()!= null) {
                     try {
-                        String getToken=response.body().string();
-                        int begin_index=getToken.indexOf("\"_token\" value=");
-                        int end_index=getToken.lastIndexOf("<!-- Email -->");
-                        String test2=getToken.substring(begin_index,end_index);
+                        String TokenStr=response.body().string();
+                        int begin_index=TokenStr.indexOf("\"_token\" value=");
+                        int end_index=TokenStr.lastIndexOf("<!-- Email -->");
+                        String test2=TokenStr.substring(begin_index,end_index);
                         Pattern p = Pattern.compile("=\"(.*)\"");
                         Matcher m =p.matcher(test2);
                         while(m.find()){
@@ -42,5 +42,8 @@ public class LoginComponent {
         });
         return logintoken;
     }
+
+
+
 
 }

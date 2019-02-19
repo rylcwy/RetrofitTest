@@ -21,9 +21,9 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
     private final SparseBooleanArray mCollapsedStatus;
     private List<Versions> versionsList;
 
-    public VersionAdapter(Context context, int textViewResourceId, List<Versions> versionsList){
-        super(context, textViewResourceId, versionsList);
-        resourceId=textViewResourceId;
+    public VersionAdapter(Context context, int resource, List<Versions> versionsList){
+        super(context, resource, versionsList);
+        resourceId=resource;
         mContext=context;
         mCollapsedStatus = new SparseBooleanArray();
         this.versionsList = versionsList;
@@ -68,8 +68,6 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
         viewHolder.versionReporter.setText(versions.getversionPublisher());
         viewHolder.versionUpdate.setText(versions.getForceUpdate());
         viewHolder.expandableTextView.setText(versions.getVersionDetail(), mCollapsedStatus, position);
-
-
         return convertView;
 
     }

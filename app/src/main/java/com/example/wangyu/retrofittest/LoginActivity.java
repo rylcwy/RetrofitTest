@@ -20,8 +20,9 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     public EditText inputemail;
     public EditText inputpassword;
-    private static String useremail;
-    private static String userpassword;
+    private static String userEmail;
+    private static String userPassword;
+    private static String userToken;
     public static CheckBox rememberMe;
     public static String CheckBoxState;
 
@@ -34,13 +35,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         rememberMe=(CheckBox)findViewById(R.id.remenberme);
         Button login=(Button)findViewById(R.id.login);
         login.setOnClickListener(this);
+        userToken=LoginComponent.getToken();
 
     }
 
 
     public void logIn(){
 
-        Call<ResponseBody> loginCall=RetrofitCommunication.getRes().login(useremail,userpassword,LoginComponent.getToken());
+        Call<ResponseBody> loginCall=RetrofitCommunication.getRes().login(userEmail,userPassword,LoginComponent.getToken());
 
         loginCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -92,8 +94,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login:
-                useremail= inputemail.getText().toString();
-                userpassword=inputpassword.getText().toString();
+                userEmail= inputemail.getText().toString();
+                userPassword=inputpassword.getText().toString();
                 if(rememberMe.isChecked()){
                     CheckBoxState="on";
                 }
