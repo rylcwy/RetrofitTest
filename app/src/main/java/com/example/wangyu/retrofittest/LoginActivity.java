@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         rememberMe=(CheckBox)findViewById(R.id.remenberme);
         Button login=(Button)findViewById(R.id.login);
         login.setOnClickListener(this);
-        userToken=LoginComponent.getToken();
 
     }
 
