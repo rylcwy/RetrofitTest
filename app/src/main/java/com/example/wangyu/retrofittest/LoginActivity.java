@@ -18,11 +18,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
-    public EditText inputemail;
-    public EditText inputpassword;
-    private static String userEmail;
-    private static String userPassword;
-    private static String userToken;
+    public static EditText inputemail;
+    public static EditText inputpassword;
     public static CheckBox rememberMe;
     public static String CheckBoxState;
 
@@ -35,13 +32,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         rememberMe=(CheckBox)findViewById(R.id.remenberme);
         Button login=(Button)findViewById(R.id.login);
         login.setOnClickListener(this);
+    }
+
+
+    class User{
+        private  String userEmail;
+        private  String userPassword;
+        private  String userToken;
+
+        public  void setUserEmail(){
+            this.userEmail=inputemail.getText().toString();
+        }
+
+        public  void setUserPassword(){
+            this.userPassword=inputpassword.getText().toString();
+        }
+
+        public void setUserToken(String userToken){
+            this.userToken=userToken;
+        }
 
     }
 
 
-    public void logIn(){
+    public  void logIn(User user){
 
-        Call<ResponseBody> loginCall=RetrofitCommunication.getRes().login(userEmail,userPassword,LoginComponent.getToken());
+        Call<ResponseBody> loginCall=RetrofitCommunication.getRes().login(user.userEmail,user.userPassword,user.userToken);
 
         loginCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -93,16 +109,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login:
-                userEmail= inputemail.getText().toString();
-                userPassword=inputpassword.getText().toString();
+                User user=new User();
+                user.setUserEmail();
+                user.setUserPassword();
+                LoginComponent.getToken(user);
                 if(rememberMe.isChecked()){
                     CheckBoxState="on";
                 }
                 else {
                     CheckBoxState="off";
                 }
-
-                logIn();
                 break;
             default:
                 break;

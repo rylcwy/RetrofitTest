@@ -12,8 +12,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginComponent {
-    private String logintoken;
-    public void getToken() {
+    private static String logintoken;
+
+    public static void getToken(final LoginActivity.User user) {
         Call<ResponseBody> getTokenCall = RetrofitCommunication.getRes().getCookie();
         getTokenCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -28,7 +29,9 @@ public class LoginComponent {
                         Matcher m =p.matcher(test2);
                         while(m.find()){
                             logintoken=m.group(1);
-                            LoginActivity
+                            user.setUserToken(logintoken);
+                            LoginActivity loginActivity=new LoginActivity();
+                            loginActivity.logIn(user);
                         }
                     } catch (Exception e) {
                         Log.d("MainActivity", "Error" + e);
@@ -41,6 +44,8 @@ public class LoginComponent {
             }
         });
     }
+
+
 
 
 }
