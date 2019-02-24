@@ -1,30 +1,26 @@
 package com.example.wangyu.retrofittest;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
+//todo activity.this ?this?
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     public static EditText inputemail;
     public static EditText inputpassword;
     public static CheckBox rememberMe;
     public static String CheckBoxState;
+    public static final String TAG="LoginActivity";
+    private LoginActivity loginActivity;
+    MyApplication myApplication;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LogUtil.d("TAG","LoginActivity onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         inputemail=(EditText)findViewById(R.id.Email);
@@ -32,87 +28,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         rememberMe=(CheckBox)findViewById(R.id.remenberme);
         Button login=(Button)findViewById(R.id.login);
         login.setOnClickListener(this);
-    }
-
-
-    class User{
-        private  String userEmail;
-        private  String userPassword;
-        private  String userToken;
-
-        public  void setUserEmail(){
-            this.userEmail=inputemail.getText().toString();
-        }
-
-        public  void setUserPassword(){
-            this.userPassword=inputpassword.getText().toString();
-        }
-
-        public void setUserToken(String userToken){
-            this.userToken=userToken;
-        }
-
-    }
-
-
-    public  void logIn(User user){
-
-        Call<ResponseBody> loginCall=RetrofitCommunication.getRes().login(user.userEmail,user.userPassword,user.userToken);
-
-        loginCall.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response1) {
-                try{
-                    Call<ResponseBody> loginRedirectCall=RetrofitCommunication.getRes().getAppsRedirect();
-                    loginRedirectCall.enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            try {
-                                if (response.body().string().contains("登录你的账户")||response.body().string().contains("记住我")){
-                                    Toast.makeText(MyApplication.getContext(),"登录失败,请重新登录",Toast.LENGTH_SHORT).show();
-                                }
-
-                                else {
-                                    Intent intent=new Intent();
-                                    intent.setAction("android.intent.action.projectlist");
-                                    startActivity(intent);
-                                }
-
-                            }
-                            catch (IOException e ){
-                                Toast.makeText(MyApplication.getContext(),"登录错误"+response.code(),Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            LogUtil.d("LoginActivity", "onFailure: "+t);
-                        }
-                    });
-                }
-                catch (Exception e){
-                    LogUtil.d("LoginActivity", "Exception: "+e);
-
-                }
-
-            }
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                LogUtil.d("LoginActivity", "onFailure: "+t);
-
-            }
-        });
+        mContext=MyApplication.getContext();
+        addActivity();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login:
-                User user=new User();
-                user.setUserEmail();
-                user.setUserPassword();
-                LoginComponent.getToken(user);
+                LoginComponent loginComponent=new LoginComponent();
+                loginComponent.getToken(mContext);
                 if(rememberMe.isChecked()){
                     CheckBoxState="on";
                 }
@@ -124,5 +49,54 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
             }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LogUtil.d(TAG, "LoginActivity onPause");
+        removeActivity();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LogUtil.d(TAG, "LoginActivity onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogUtil.d(TAG, "LoginActivity onDestroy");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LogUtil.d(TAG, "LoginActivity onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtil.d(TAG, "LoginActivity onResume");
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        LogUtil.d(TAG, "LoginActivity onRestart");
+    }
+
+    public void addActivity() {
+        ((MyApplication)getApplication()).addActivity_(this);// 调用myApplication的添加Activity方法
+    }
+
+    public void removeActivity(){
+        ((MyApplication)getApplication()).removeActivity_(this);
+    }
+
 }
+
+
 

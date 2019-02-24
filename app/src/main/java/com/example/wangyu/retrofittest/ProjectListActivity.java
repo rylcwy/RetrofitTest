@@ -9,6 +9,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class ProjectListActivity extends AppCompatActivity implements View.OnClickListener {
+    public final String TAG="ProjectListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
         releaseButton.setOnClickListener(this);
         padButton.setOnClickListener(this);
         internationalButton.setOnClickListener(this);
+
     }
 
     @Override
@@ -83,6 +85,12 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
         public Call<ResponseBody> getCallableResponse(int pageNumber) {
             return RetrofitCommunication.getRes().getTapTapInternational(pageNumber);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogUtil.d(TAG,"ProjectActivity onDestroy");
     }
 }
 
