@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def build_number = "V1";
+
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -10,6 +13,14 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                output -> output.outputFileName = "RetrofitTest_" + buildType.name + "_" + defaultConfig.versionName + "_" + build_number + "_" + new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC")) + ".apk"
+            }
+    }
+
 
     signingConfigs{
         config {
