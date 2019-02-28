@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 def build_number = "V1";
+def build_timeStamp;
 
 
 android {
@@ -17,7 +18,7 @@ android {
     android.applicationVariants.all {
         variant ->
             variant.outputs.all {
-                output -> output.outputFileName = "RetrofitTest_" + buildType.name + "_" + defaultConfig.versionName + "_" + build_number + "_" + new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC")) + ".apk"
+                output -> output.outputFileName = "RetrofitTest_" + buildType.name + "_" + defaultConfig.versionName + "_" + build_number + "_" + new Date().format("yyyyMMdd HH:mm:ss", TimeZone.getTimeZone("Asia/Shanghai")) + ".apk"
             }
     }
 
