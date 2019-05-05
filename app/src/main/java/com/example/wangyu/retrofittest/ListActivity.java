@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -74,6 +75,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
                 List<String> versionsInfoList;
                 List<String> sublist;
                 List<String> updateDetailList;
+
                 try {
                     String html = response.body().string();
                     if (html.contains("登录你的账户")) {
@@ -87,23 +89,31 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
 //                        String listName = name.eachText().get(2);
                         Elements versionDetailElements = doc.select("table.table.table-hover tr:nth-child(even)");
                         Elements versionsInfoElements = doc.select("table.table.table-hover tr:nth-child(odd) td");
+                        Elements links=doc.select("a[href$=apk]");
+
+                        System.out.print("links"+links);
+
+
+
                         updateDetailList = versionDetailElements.eachText();
                         versionsInfoList = versionsInfoElements.eachText();
-                        int count = versionsInfoList.size() / 7;
-                        int remainder = versionsInfoList.size() % 7;
+                        int count = versionsInfoList.size() / 6;
+                        int remainder = versionsInfoList.size() % 6;
                         if (remainder == 0) {
                             int detailIndex = 0;
                             for (int i = 0; i < count; i++) {
                                 VersionInfo versionInfo = new VersionInfo();
-                                sublist = versionsInfoList.subList(i * 7, i * 7 + 6);
+                                sublist = versionsInfoList.subList(i * 6, i * 6 + 6);
                                 //VersionInfo versionInfo=new VersionInfo();
-                                versionInfo.setVersionId(sublist.get(0));
-                                versionInfo.setVersionCode(sublist.get(1));
-                                versionInfo.setVersionName(sublist.get(1));
-                                versionInfo.setVersionSize(sublist.get(2));
-                                versionInfo.setVersionForce(sublist.get(3));
-                                versionInfo.setVersionPublisher(sublist.get(4));
-                                versionInfo.setVersonDate(sublist.get(5));
+                                //versionInfo.setVersionId(sublist.get(0));
+                                String VersionName=StringUtils.substringBefore(sublist.get(0),"(");
+                                String VersionCode=StringUtils.substringBetween(sublist.get(0),"(",")");
+                                versionInfo.setVersionCode(VersionCode);
+                                versionInfo.setVersionName(VersionName);
+                                versionInfo.setVersionSize(sublist.get(1));
+                                versionInfo.setVersionForce(sublist.get(2));
+                                versionInfo.setVersionPublisher(sublist.get(3));
+                                versionInfo.setVersonDate(sublist.get(4));
                                 versionInfo.setVersionDetail(updateDetailList.get(detailIndex));
                                 detailIndex++;
                                 versionInfoResult.add(versionInfo);
@@ -112,7 +122,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
                     }
                     processShow(versionInfoResult, init);
                 } catch (IOException e) {
-                    LogUtil.e("ProjectActivity", "get TapTapBeta list call error");
+                    LogUtil.e("ProjectActivity", "get TapTapBeta list call error"+e);
                 }
             }
 
@@ -129,7 +139,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
             @Override
             public void run() {
                 for (VersionInfo versionInfo : versionInfoList) {
-                    Versions versionView = new Versions(versionInfo.getVersionCode(), versionInfo.getVersionCode(), versionInfo.getVersionDetail(), versionInfo.getVersonDate(),
+                    Versions versionView = new Versions(versionInfo.getVersionName(), versionInfo.getVersionCode(), versionInfo.getVersionDetail(), versionInfo.getVersonDate(),
                             versionInfo.getVersionPublisher(), versionInfo.getVersionForce());
                     versionsList.add(versionView);
                 }
