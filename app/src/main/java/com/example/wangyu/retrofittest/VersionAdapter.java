@@ -13,12 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import java.util.List;
 
-public class VersionAdapter extends ArrayAdapter<Versions>{
+public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnClickListener{
     private DownloadService.DownloadBinder downloadBinder;
     private ServiceConnection connection=new ServiceConnection() {
         @Override
@@ -54,7 +55,15 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.download:
+                Toast.makeText(getContext(),"我是按钮",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @NonNull
@@ -74,17 +83,21 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
             viewHolder.download=(Button)convertView.findViewById(R.id.download);
 
             convertView.setTag(viewHolder);
+
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
+        viewHolder.download.setOnClickListener(this);
         viewHolder.versionCode.setText(versions.getVersionCode());
         viewHolder.versionName.setText(versions.getVersionName());
         viewHolder.versionDate.setText(versions.getVersionDate());
         viewHolder.versionReporter.setText(versions.getversionPublisher());
         viewHolder.versionUpdate.setText(versions.getForceUpdate());
         viewHolder.expandableTextView.setText(versions.getVersionDetail(), mCollapsedStatus, position);
+
         return convertView;
+
+
 
     }
 

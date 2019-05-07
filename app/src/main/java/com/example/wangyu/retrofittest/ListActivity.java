@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
@@ -147,6 +149,12 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
                 if (init) {
                     VersionAdapter adapter = new VersionAdapter(ListActivity.this, R.layout.versions_item, versionsList);
                     loadListView = (LoadListView) findViewById(R.id.list_view);
+                    loadListView.setOnItemClickListener(new LoadListView.OnItemClickListener(){
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Toast.makeText(ListActivity.this,"我是点击事件i="+position+"l="+id,Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     loadListView.setAdapter(adapter);
                     loadListView.setInterface(ListActivity.this);
                 } else {
