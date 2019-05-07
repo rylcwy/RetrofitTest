@@ -7,17 +7,19 @@ public class Versions {
     private String versionDate;
     private String versionPublisher;
     private String forceUpdate;
+    private String apkUrl;
 
 
 
     public Versions(String versionName, String versionCode, String versionDetail, String versionDate, String versionPublisher,
-                    String forceUpdate){
+                    String forceUpdate,String apkUrl){
         this.versionCode=versionCode;
         this.versionDate=versionDate;
         this.versionDetail=versionDetail;
         this.versionName=versionName;
         this.versionPublisher=versionPublisher;
         this.forceUpdate=forceUpdate;
+        this.apkUrl=apkUrl;
 
     }
 
@@ -44,5 +46,7 @@ public class Versions {
     public String getForceUpdate() {
         return forceUpdate;
     }
+
+    public String getApkUrl(){return apkUrl;}
 
 }

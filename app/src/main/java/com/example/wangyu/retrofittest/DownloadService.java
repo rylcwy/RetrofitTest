@@ -66,6 +66,11 @@ public class DownloadService extends Service {
         return mBinder;
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     class DownloadBinder extends Binder{
         public void startDownload(String url){
             if (downloadTask==null){

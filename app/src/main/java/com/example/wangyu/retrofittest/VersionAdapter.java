@@ -1,9 +1,6 @@
 package com.example.wangyu.retrofittest;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.SparseBooleanArray;
@@ -20,29 +17,21 @@ import com.ms.square.android.expandabletextview.ExpandableTextView;
 import java.util.List;
 
 public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnClickListener{
-    private DownloadService.DownloadBinder downloadBinder;
-    private ServiceConnection connection=new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            downloadBinder=(DownloadService.DownloadBinder) service;
-        }
 
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
     private int resourceId;
     private final Context mContext;
     private final SparseBooleanArray mCollapsedStatus;
     private List<Versions> versionsList;
+    private DownloadService.DownloadBinder mdownloadBinder;
 
-    public VersionAdapter(Context context, int resource, List<Versions> versionsList){
+    public VersionAdapter(Context context, int resource, List<Versions> versionsList, DownloadService.DownloadBinder downloadBinder){
         super(context, resource, versionsList);
         resourceId=resource;
         mContext=context;
         mCollapsedStatus = new SparseBooleanArray();
         this.versionsList = versionsList;
+        mdownloadBinder=downloadBinder;
+
 
     }
 
@@ -63,6 +52,8 @@ public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnCli
         switch (v.getId()){
             case R.id.download:
                 Toast.makeText(getContext(),"我是按钮",Toast.LENGTH_SHORT).show();
+                String url="https://assets.sfcdn.org/pub2/201904/c5eb4ef564798496c137851a617f338e.apk";
+                mdownloadBinder.startDownload(url);
         }
     }
 
@@ -81,7 +72,6 @@ public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnCli
             viewHolder.versionReporter=(TextView)convertView.findViewById(R.id.reporter);
             viewHolder.versionUpdate=(TextView)convertView.findViewById(R.id.force_update);
             viewHolder.download=(Button)convertView.findViewById(R.id.download);
-
             convertView.setTag(viewHolder);
 
         } else {

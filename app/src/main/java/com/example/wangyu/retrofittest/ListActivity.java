@@ -1,9 +1,12 @@
 package com.example.wangyu.retrofittest;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +32,18 @@ import retrofit2.Response;
 
 
 public class ListActivity extends AppCompatActivity implements LoadListView.IloadListener {
+    private DownloadService.DownloadBinder downloadBinder;
+    private ServiceConnection connection=new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            downloadBinder=(DownloadService.DownloadBinder) service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
     private List<Versions> versionsList = new ArrayList<>();
     private ViewPager mViewPager;
     private static LoadListView loadListView;
@@ -54,6 +69,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
         setContentView(R.layout.activity_list_view);
         fetcher = (ProjectResponseFetcher) getIntent().getSerializableExtra("fetcher");
         generateView(true);
+
     }
 
     @Override
@@ -142,13 +158,17 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
             public void run() {
                 for (VersionInfo versionInfo : versionInfoList) {
                     Versions versionView = new Versions(versionInfo.getVersionName(), versionInfo.getVersionCode(), versionInfo.getVersionDetail(), versionInfo.getVersonDate(),
-                            versionInfo.getVersionPublisher(), versionInfo.getVersionForce());
+                            versionInfo.getVersionPublisher(), versionInfo.getVersionForce(),versionInfo.getApkUrl());
                     versionsList.add(versionView);
                 }
 
                 if (init) {
-                    VersionAdapter adapter = new VersionAdapter(ListActivity.this, R.layout.versions_item, versionsList);
+                    VersionAdapter adapter = new VersionAdapter(ListActivity.this, R.layout.versions_item, versionsList,downloadBinder);
                     loadListView = (LoadListView) findViewById(R.id.list_view);
+
+                    Intent intent=new Intent(MyApplication.getContext(),DownloadService.class);
+                    startService(intent);
+                    bindService(intent, connection,BIND_AUTO_CREATE);
                     loadListView.setOnItemClickListener(new LoadListView.OnItemClickListener(){
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

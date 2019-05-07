@@ -11,6 +11,7 @@ public class VersionInfo implements Serializable {
     private String versionPublisher;
     private String versonDate;
     private String versionDetail;
+    private String apkUrl;
 
 
     public  VersionInfo(){
@@ -84,8 +85,11 @@ public class VersionInfo implements Serializable {
         return versionId;
     }
 
+    public String getApkUrl() {
+        return apkUrl;
+    }
 
-
-
-
+    public void setApkUrl(String apkUrl) {
+        this.apkUrl = apkUrl;
+    }
 }
