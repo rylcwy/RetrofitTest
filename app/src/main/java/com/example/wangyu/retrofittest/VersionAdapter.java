@@ -1,6 +1,9 @@
 package com.example.wangyu.retrofittest;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.SparseBooleanArray;
@@ -16,6 +19,18 @@ import com.ms.square.android.expandabletextview.ExpandableTextView;
 import java.util.List;
 
 public class VersionAdapter extends ArrayAdapter<Versions>{
+    private DownloadService.DownloadBinder downloadBinder;
+    private ServiceConnection connection=new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            downloadBinder=(DownloadService.DownloadBinder) service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
     private int resourceId;
     private final Context mContext;
     private final SparseBooleanArray mCollapsedStatus;
@@ -57,6 +72,7 @@ public class VersionAdapter extends ArrayAdapter<Versions>{
             viewHolder.versionReporter=(TextView)convertView.findViewById(R.id.reporter);
             viewHolder.versionUpdate=(TextView)convertView.findViewById(R.id.force_update);
             viewHolder.download=(Button)convertView.findViewById(R.id.download);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
