@@ -1,13 +1,18 @@
 package com.example.wangyu.retrofittest;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageInstaller;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -69,7 +74,26 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
         setContentView(R.layout.activity_list_view);
         fetcher = (ProjectResponseFetcher) getIntent().getSerializableExtra("fetcher");
         generateView(true);
+        Intent intent=new Intent(MyApplication.getContext(),DownloadService.class);
+        startService(intent);
+        bindService(intent, connection,BIND_AUTO_CREATE);
+        if (ContextCompat.checkSelfPermission(ListActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(ListActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        }
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @android.support.annotation.NonNull String[] permissions, @android.support.annotation.NonNull int[] grantResults) {
+        switch (requestCode){
+            case 1:
+                if (grantResults.length>0 && grantResults[0]!=PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(MyApplication.getContext(),"拒绝权限无法使用程序",Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
+                default:
+        }
     }
 
     @Override
@@ -93,6 +117,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
                 List<String> versionsInfoList;
                 List<String> sublist;
                 List<String> updateDetailList;
+                List<String> urlList;
 
                 try {
                     String html = response.body().string();
@@ -108,10 +133,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
                         Elements versionDetailElements = doc.select("table.table.table-hover tr:nth-child(even)");
                         Elements versionsInfoElements = doc.select("table.table.table-hover tr:nth-child(odd) td");
                         Elements links=doc.select("a[href$=apk]");
-
-                        System.out.print("links"+links);
-
-
+                        urlList =links.eachAttr("href");
 
                         updateDetailList = versionDetailElements.eachText();
                         versionsInfoList = versionsInfoElements.eachText();
@@ -133,6 +155,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
                                 versionInfo.setVersionPublisher(sublist.get(3));
                                 versionInfo.setVersonDate(sublist.get(4));
                                 versionInfo.setVersionDetail(updateDetailList.get(detailIndex));
+                                versionInfo.setApkUrl(urlList.get(i));
                                 detailIndex++;
                                 versionInfoResult.add(versionInfo);
                             }
@@ -166,9 +189,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
                     VersionAdapter adapter = new VersionAdapter(ListActivity.this, R.layout.versions_item, versionsList,downloadBinder);
                     loadListView = (LoadListView) findViewById(R.id.list_view);
 
-                    Intent intent=new Intent(MyApplication.getContext(),DownloadService.class);
-                    startService(intent);
-                    bindService(intent, connection,BIND_AUTO_CREATE);
+
                     loadListView.setOnItemClickListener(new LoadListView.OnItemClickListener(){
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

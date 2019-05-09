@@ -1,8 +1,14 @@
 package com.example.wangyu.retrofittest;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,9 +57,8 @@ public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.download:
-                Toast.makeText(getContext(),"我是按钮",Toast.LENGTH_SHORT).show();
-                String url="https://assets.sfcdn.org/pub2/201904/c5eb4ef564798496c137851a617f338e.apk";
-                mdownloadBinder.startDownload(url);
+                int ButtonPosition=(int) v.getTag(R.id.btn);
+                mdownloadBinder.startDownload(versionsList.get(ButtonPosition).getApkUrl());
         }
     }
 
@@ -78,13 +83,13 @@ public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnCli
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.download.setOnClickListener(this);
+        viewHolder.download.setTag(R.id.btn,position);
         viewHolder.versionCode.setText(versions.getVersionCode());
         viewHolder.versionName.setText(versions.getVersionName());
         viewHolder.versionDate.setText(versions.getVersionDate());
         viewHolder.versionReporter.setText(versions.getversionPublisher());
         viewHolder.versionUpdate.setText(versions.getForceUpdate());
         viewHolder.expandableTextView.setText(versions.getVersionDetail(), mCollapsedStatus, position);
-
         return convertView;
 
 

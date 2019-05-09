@@ -3,6 +3,8 @@ package com.example.wangyu.retrofittest;
 import android.os.AsyncTask;
 import android.os.Environment;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +23,7 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
     private boolean isCanceled = false;
     private boolean isPaused = false;
     private int lastProgress;
+    private File file = null;
 
     public DownloadTask(DownloadListener downloadListener) {
         this.downloadListener = downloadListener;
@@ -30,7 +33,7 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
     protected void onPostExecute(Integer status) {
         switch (status) {
             case TYPE_SUCCESS:
-                downloadListener.onSuccess();
+                downloadListener.onSuccess(file);
                 break;
             case TYPE_FAILED:
                 downloadListener.onFail();
@@ -81,13 +84,13 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
     protected Integer doInBackground(String... params) {
         InputStream is = null;
         RandomAccessFile saveFile = null;
-        File file = null;
+
         try {
             long downloadedLength = 0;
             String downloadUrl = params[0];
-            String fileName = downloadUrl.substring(downloadUrl.indexOf(".apk"));
+            String fileName = StringUtils.substringAfterLast(downloadUrl,"/");
             String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-            file = new File(directory + fileName);
+            file = new File(directory +"/"+ fileName);
             if (file.exists()) {
                 downloadedLength = file.length();
             }

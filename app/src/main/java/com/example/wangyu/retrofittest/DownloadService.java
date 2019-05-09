@@ -1,17 +1,24 @@
 package com.example.wangyu.retrofittest;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
 import java.io.File;
+
+import static android.app.NotificationChannel.DEFAULT_CHANNEL_ID;
 
 public class DownloadService extends Service {
     private DownloadTask downloadTask;
@@ -20,14 +27,26 @@ public class DownloadService extends Service {
         @Override
         public void onProgress(int progress) {
             getNotificationManager().notify(1, getNotification("Downloading....", progress));
+
         }
 
         @Override
-        public void onSuccess() {
+        public void onSuccess(File file) {
             downloadTask = null;
             stopForeground(true);
             getNotificationManager().notify(1, getNotification("Download sussess", -1));
             Toast.makeText(DownloadService.this, "Download Success", Toast.LENGTH_SHORT).show();
+            Intent install = new Intent(Intent.ACTION_VIEW);
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+                Uri uri=FileProvider.getUriForFile(MyApplication.getContext(),"com.example.wangyu.retrofittest.fileprovider",file);
+                install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                install.setDataAndType(uri, "application/vnd.android.package-archive");
+            }
+            else {
+                install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                install.setDataAndType(Uri.fromFile(file),"application/vnd.android.package-archive");
+            }
+            startActivity(install);
 
         }
 
@@ -114,13 +133,24 @@ public class DownloadService extends Service {
     private Notification getNotification(String title, int progress) {
         Intent intent = new Intent(this, ListActivity.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentIntent(pi);
-        builder.setContentTitle(title);
-        if (progress > 0) {
-            builder.setContentText(progress + "%");
-            builder.setProgress(100, progress, false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String ChannelID = "com.example.wangu.retroffittest";
+            NotificationChannel mChannel = new NotificationChannel(ChannelID, "下载下载", NotificationManager.IMPORTANCE_DEFAULT);
+            getNotificationManager().createNotificationChannel(mChannel);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(MyApplication.getContext(), ChannelID);
+            builder.setContentIntent(pi);
+            builder.setContentTitle(title);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
+            if (progress > 0) {
+                builder.setContentText(progress + "%");
+                builder.setProgress(100, progress, false);
+            }
+            return builder.build();
         }
-        return builder.build();
+        else {
+            NotificationCompat.Builder builder=new NotificationCompat.Builder(MyApplication.getContext(),"default");
+            return builder.build();
+        }
+
     }
 }
