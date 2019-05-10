@@ -23,7 +23,7 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
     private boolean isCanceled = false;
     private boolean isPaused = false;
     private int lastProgress;
-    private File file = null;
+    private File file;
 
     public DownloadTask(DownloadListener downloadListener) {
         this.downloadListener = downloadListener;
@@ -89,8 +89,8 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
             long downloadedLength = 0;
             String downloadUrl = params[0];
             String fileName = StringUtils.substringAfterLast(downloadUrl,"/");
-            String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-            file = new File(directory +"/"+ fileName);
+            String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()+"/"+fileName;
+            file = new File(directory);
             if (file.exists()) {
                 downloadedLength = file.length();
             }

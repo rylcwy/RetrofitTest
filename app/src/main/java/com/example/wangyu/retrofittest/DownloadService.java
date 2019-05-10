@@ -40,6 +40,7 @@ public class DownloadService extends Service {
             if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
                 Uri uri=FileProvider.getUriForFile(MyApplication.getContext(),"com.example.wangyu.retrofittest.fileprovider",file);
                 install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                install.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 install.setDataAndType(uri, "application/vnd.android.package-archive");
             }
             else {
