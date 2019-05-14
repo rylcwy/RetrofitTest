@@ -2,20 +2,29 @@ package com.example.wangyu.retrofittest;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
 public interface SendRequest {
+    @GET("/apk/{number}/download")
+    Call<Response> getDownloadUrl(@Path("number") int umber);
+
     @GET("/login")
     Call<ResponseBody> getCookie();
 
     @POST("/login")
     @FormUrlEncoded
     Call<ResponseBody> login(@Field("email") String email, @Field("password") String password, @Field("_token") String token);
+
+    @POST("/logout")
+    @FormUrlEncoded
+    Call<ResponseBody> logout(@Field("_token")String token);
 
     @GET("/")
     Call<ResponseBody> getAppsRedirect();

@@ -6,6 +6,12 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +26,7 @@ import static com.example.wangyu.retrofittest.LoginActivity.inputpassword;
 
 public class LoginComponent {
     private static String logintoken;
+    private static String logouttoken;
 
 
     class User{
@@ -87,14 +94,19 @@ public class LoginComponent {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             try {
-                                if (response.body().string().contains("登录你的账户")||response.body().string().contains("记住我")){
+                                String html=response.body().string();
+                                if (html.contains("登录你的账户")||html.contains("记住我")){
                                     Toast.makeText(MyApplication.getContext(),"登录失败,请重新登录",Toast.LENGTH_SHORT).show();
                                 }
 
                                 else {
+                                    Document doc=Jsoup.parse(html);
+                                    Elements elements=doc.select("#logout-form");
+                                    logouttoken= StringUtils.substringBetween(elements.toString(),"value=\"","\"");
                                     Intent intent=new Intent();
                                     intent.setAction("android.intent.action.projectlist");
                                     context.startActivity(intent);
+
                                 }
 
                             }
@@ -124,6 +136,11 @@ public class LoginComponent {
         });
     }
 
+
+
+    public static String getLogouttoken(){
+        return logouttoken;
+    }
 
 
 

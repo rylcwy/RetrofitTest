@@ -1,15 +1,17 @@
 package com.example.wangyu.retrofittest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class ProjectListActivity extends AppCompatActivity implements View.OnClickListener {
-    public final String TAG="ProjectListActivity";
+    public final String TAG = "ProjectListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +21,12 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
         Button releaseButton = (Button) findViewById(R.id.TapTap);
         Button padButton = (Button) findViewById(R.id.TapTap_Pad);
         Button internationalButton = (Button) findViewById(R.id.TapTap_international);
+        Button logOut = (Button) findViewById(R.id.Logout);
         betaButton.setOnClickListener(this);
         releaseButton.setOnClickListener(this);
         padButton.setOnClickListener(this);
         internationalButton.setOnClickListener(this);
+        logOut.setOnClickListener(this);
 
     }
 
@@ -45,6 +49,13 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                 ListActivity.actionStart(MyApplication.getContext(), new InternationalProjectResponseFetcher());
                 break;
 
+            case R.id.Logout:
+                LogoutComponent.logout();
+                finish();
+                Intent intent=new Intent();
+                intent.setAction("android.intent.action.login");
+                startActivity(intent);
+                Toast.makeText(ProjectListActivity.this,"退出",Toast.LENGTH_SHORT).show();
             default:
                 break;
         }
@@ -90,7 +101,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LogUtil.d(TAG,"ProjectActivity onDestroy");
+        LogUtil.d(TAG, "ProjectActivity onDestroy");
     }
 }
 

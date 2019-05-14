@@ -123,6 +123,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
                     String html = response.body().string();
                     if (html.contains("登录你的账户")) {
                         Toast.makeText(MyApplication.getContext(), "登录失效，请重新登录", Toast.LENGTH_SHORT).show();
+                        LogoutComponent.logout();
                         Intent intent = new Intent();
                         intent.setAction("android.intent.action.login");
                         MyApplication.getContext().startActivity(intent);
@@ -132,7 +133,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
 //                        String listName = name.eachText().get(2);
                         Elements versionDetailElements = doc.select("table.table.table-hover tr:nth-child(even)");
                         Elements versionsInfoElements = doc.select("table.table.table-hover tr:nth-child(odd) td");
-                        Elements links=doc.select("a[href$=apk]");
+                        Elements links=doc.select("a[href*=apk]");
                         urlList =links.eachAttr("href");
 
                         updateDetailList = versionDetailElements.eachText();
@@ -169,7 +170,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                LogUtil.e("ProjectActivity", "get TapTapBeta list call error");
+                LogUtil.e("ProjectActivity", "get TapTapBeta list call error"+t);
 
             }
         });
@@ -188,14 +189,12 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
                 if (init) {
                     VersionAdapter adapter = new VersionAdapter(ListActivity.this, R.layout.versions_item, versionsList,downloadBinder);
                     loadListView = (LoadListView) findViewById(R.id.list_view);
-
-
-                    loadListView.setOnItemClickListener(new LoadListView.OnItemClickListener(){
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Toast.makeText(ListActivity.this,"我是点击事件i="+position+"l="+id,Toast.LENGTH_SHORT).show();
-                        }
-                    });
+//                    loadListView.setOnItemClickListener(new LoadListView.OnItemClickListener(){
+//                        @Override
+//                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                            Toast.makeText(ListActivity.this,"我是点击事件i="+position+"l="+id,Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
                     loadListView.setAdapter(adapter);
                     loadListView.setInterface(ListActivity.this);
                 } else {

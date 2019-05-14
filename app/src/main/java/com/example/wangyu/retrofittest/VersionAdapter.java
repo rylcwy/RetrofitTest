@@ -22,6 +22,9 @@ import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Response;
+
 public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnClickListener{
 
     private int resourceId;
@@ -29,6 +32,7 @@ public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnCli
     private final SparseBooleanArray mCollapsedStatus;
     private List<Versions> versionsList;
     private DownloadService.DownloadBinder mdownloadBinder;
+    private DownloadUrlsResponseFetcher downloadUrlResponseFetcher;
 
     public VersionAdapter(Context context, int resource, List<Versions> versionsList, DownloadService.DownloadBinder downloadBinder){
         super(context, resource, versionsList);
@@ -58,6 +62,7 @@ public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnCli
         switch (v.getId()){
             case R.id.download:
                 int ButtonPosition=(int) v.getTag(R.id.btn);
+                downloadUrlResponseFetcher.getCallableResponse(35861);
                 mdownloadBinder.startDownload(versionsList.get(ButtonPosition).getApkUrl());
         }
     }
@@ -101,6 +106,15 @@ public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnCli
         TextView versionName,versionCode,versionDate,versionReporter,versionUpdate;
         Button download;
 
+    }
+
+    public static class DownloadUrlsResponseFetcher implements DownloadUrlResponseFetcher{
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Call<Response> getCallableResponse(int Number) {
+            return RetrofitCommunication.getRes().getDownloadUrl(Number);
+        }
     }
 
 }
