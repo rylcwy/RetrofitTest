@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +21,19 @@ import android.widget.Toast;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Header;
+
+import static java.lang.Integer.parseInt;
 
 public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnClickListener{
 
@@ -32,7 +42,7 @@ public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnCli
     private final SparseBooleanArray mCollapsedStatus;
     private List<Versions> versionsList;
     private DownloadService.DownloadBinder mdownloadBinder;
-    private DownloadUrlsResponseFetcher downloadUrlResponseFetcher;
+    private String downloadUrl;
 
     public VersionAdapter(Context context, int resource, List<Versions> versionsList, DownloadService.DownloadBinder downloadBinder){
         super(context, resource, versionsList);
@@ -41,8 +51,6 @@ public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnCli
         mCollapsedStatus = new SparseBooleanArray();
         this.versionsList = versionsList;
         mdownloadBinder=downloadBinder;
-
-
     }
 
 
@@ -62,8 +70,23 @@ public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnCli
         switch (v.getId()){
             case R.id.download:
                 int ButtonPosition=(int) v.getTag(R.id.btn);
-                downloadUrlResponseFetcher.getCallableResponse(35861);
-                mdownloadBinder.startDownload(versionsList.get(ButtonPosition).getApkUrl());
+                String numberstr=StringUtils.substringBetween(versionsList.get(ButtonPosition).getApkUrl(),"apk/","/download");
+                int number=Integer.parseInt(numberstr);
+                Call<ResponseBody> getDownloadUrlCall=RetrofitCommunication.getRes().getDownloadUrl(number);
+                getDownloadUrlCall.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        String rawResponse=response.raw().toString();
+                        downloadUrl=StringUtils.substringBetween(rawResponse,"url=","}");
+                        mdownloadBinder.startDownload(downloadUrl);
+                    }
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.e("download", "得到重定向的下载url失败"+t);
+                    }
+                });
+
+
         }
     }
 
@@ -108,13 +131,5 @@ public class VersionAdapter extends ArrayAdapter<Versions> implements View.OnCli
 
     }
 
-    public static class DownloadUrlsResponseFetcher implements DownloadUrlResponseFetcher{
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public Call<Response> getCallableResponse(int Number) {
-            return RetrofitCommunication.getRes().getDownloadUrl(Number);
-        }
-    }
 
 }

@@ -16,6 +16,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 
 import static android.app.NotificationChannel.DEFAULT_CHANNEL_ID;
@@ -113,7 +115,7 @@ public class DownloadService extends Service {
             }
             else {
                 if (downloadUrl !=null){
-                    String fileName=downloadUrl.substring(downloadUrl.lastIndexOf(".apk"));
+                    String fileName=StringUtils.substringAfter(downloadUrl,"https://assets.sfcdn.org/pub2/");
                     String dircetory=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
                     File file=new File(dircetory+fileName);
                     if (file.exists()){

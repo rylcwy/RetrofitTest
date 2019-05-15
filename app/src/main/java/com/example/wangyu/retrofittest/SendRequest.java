@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 
 public interface SendRequest {
     @GET("/apk/{number}/download")
-    Call<Response> getDownloadUrl(@Path("number") int umber);
+    Call<ResponseBody> getDownloadUrl(@Path("number") int number);
 
     @GET("/login")
     Call<ResponseBody> getCookie();
@@ -40,6 +40,8 @@ public interface SendRequest {
 
     @GET("/application/5a6addec82df6/releases?")
     Call<ResponseBody> getTapTapInternational(@Query("page") int page);
+
+
 
 
 

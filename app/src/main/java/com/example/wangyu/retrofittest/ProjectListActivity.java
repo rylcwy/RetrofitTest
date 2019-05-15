@@ -62,6 +62,11 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     public static class BetaProjectResponseFetcher implements ProjectResponseFetcher {
         private static final long serialVersionUID = 1L;
 

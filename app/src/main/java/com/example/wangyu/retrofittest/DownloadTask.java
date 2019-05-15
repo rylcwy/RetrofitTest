@@ -88,9 +88,10 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
         try {
             long downloadedLength = 0;
             String downloadUrl = params[0];
-            String fileName = StringUtils.substringBetween(downloadUrl,"apk/","/download");
-            String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()+"/"+fileName+".apk";
-            file = new File(directory);
+            String fileName=StringUtils.substringAfter(downloadUrl,"https://assets.sfcdn.org/pub2/");
+            fileName=StringUtils.substringAfter(fileName,"/");
+            String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+            file = new File(directory+"/"+fileName);
             if (file.exists()) {
                 downloadedLength = file.length();
             }
