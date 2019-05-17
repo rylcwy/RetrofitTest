@@ -15,7 +15,7 @@ public class PersistentCookieStore {
     private final String COOKIE_PREFS = "Cookies_Prefs";
     private final String LOGIN_STATUS = "Login_Status";
     private SharedPreferences.Editor prefsWriter;
-    private SharedPreferences.Editor loginstatueWriter;
+    private static SharedPreferences.Editor loginstatueWriter;
     private static SharedPreferences cookiePrefs;
     private static SharedPreferences loginstatusPrefs;
 
@@ -48,9 +48,9 @@ public class PersistentCookieStore {
                 this.prefsWriter.putString(cookie.name(), cookie.value());
                 this.prefsWriter.apply();
 
-                this.loginstatueWriter=loginstatusPrefs.edit();
-                this.loginstatueWriter.putBoolean("isLogin",true);
-                this.loginstatueWriter.apply();
+                loginstatueWriter=loginstatusPrefs.edit();
+                loginstatueWriter.putBoolean("isLogin",true);
+                loginstatueWriter.apply();
             }
         }
     }
@@ -76,6 +76,12 @@ public class PersistentCookieStore {
 
 
         return result;
+    }
+
+    public static void setLoginStatus(boolean isLogin){
+        loginstatueWriter=loginstatusPrefs.edit();
+        loginstatueWriter.putBoolean("isLogin",isLogin);
+        loginstatueWriter.apply();
     }
 
 }

@@ -70,6 +70,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActivityUtils.addActivity(ListActivity.this);
         super.onCreate(savedInstanceState);
         currentPage = 0;
         setContentView(R.layout.activity_list_view);
@@ -210,6 +211,7 @@ public class ListActivity extends AppCompatActivity implements LoadListView.Iloa
     protected void onDestroy() {
         Log.d("listactivity", "onDestroy: ");
         super.onDestroy();
+        ActivityUtils.removeActivity(ListActivity.this);
         versionsList.clear();
     }
 }

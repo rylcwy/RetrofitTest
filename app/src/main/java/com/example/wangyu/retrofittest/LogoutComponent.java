@@ -21,7 +21,7 @@ public class LogoutComponent {
                       logoutRedirectCall2.enqueue(new Callback<ResponseBody>() {
                           @Override
                           public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
+                              PersistentCookieStore.setLoginStatus(false);
                           }
 
                           @Override

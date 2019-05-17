@@ -15,6 +15,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActivityUtils.addActivity(ProjectListActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_list);
         Button betaButton = (Button) findViewById(R.id.TapTap_Beta);
@@ -62,10 +63,6 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    @Override
-    public void onBackPressed() {
-
-    }
 
     public static class BetaProjectResponseFetcher implements ProjectResponseFetcher {
         private static final long serialVersionUID = 1L;
@@ -106,6 +103,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityUtils.removeActivity(ProjectListActivity.this);
         LogUtil.d(TAG, "ProjectActivity onDestroy");
     }
 }
