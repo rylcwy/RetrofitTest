@@ -1,6 +1,7 @@
 package com.example.wangyu.retrofittest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ public class LoadListView extends ListView implements AbsListView.OnScrollListen
     int lastVisibieItem;
     boolean isLoading;
     IloadListener iloadListener;
+
 
     public LoadListView (Context context, AttributeSet attrs){
         super(context,attrs);

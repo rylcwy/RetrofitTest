@@ -18,6 +18,9 @@ public interface SendRequest {
     @GET("/login")
     Call<ResponseBody> getCookie();
 
+    @GET("login")
+    Call<ResponseBody> loginAfterlogout();
+
     @POST("/login")
     @FormUrlEncoded
     Call<ResponseBody> login(@Field("email") String email, @Field("password") String password, @Field("_token") String token);

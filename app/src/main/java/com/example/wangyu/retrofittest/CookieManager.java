@@ -1,6 +1,7 @@
 package  com.example.wangyu.retrofittest;
 
 import android.content.Context;
+import android.content.Intent;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public class CookieManager implements CookieJar{
     public List<Cookie> loadForRequest(HttpUrl url) {
        return cookieStore.load();
     }
+
+
 }

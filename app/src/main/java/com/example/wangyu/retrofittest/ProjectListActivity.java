@@ -56,7 +56,7 @@ public class ProjectListActivity extends AppCompatActivity implements View.OnCli
                 Intent intent=new Intent();
                 intent.setAction("android.intent.action.login");
                 startActivity(intent);
-                Toast.makeText(ProjectListActivity.this,"退出",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProjectListActivity.this,"退出登录",Toast.LENGTH_SHORT).show();
             default:
                 break;
         }
