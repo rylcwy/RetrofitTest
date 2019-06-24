@@ -114,7 +114,9 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:text="下载"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp"
+                        android:focusable="false"
+                        android:clickable="true"/>
 
                 </LinearLayout>
 
