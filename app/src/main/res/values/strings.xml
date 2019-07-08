@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RetrofitTest</string>
+    <string name="app_name">TapTapTools</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
